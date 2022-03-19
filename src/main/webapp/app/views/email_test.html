@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+function fun(){
+	alert(1);
+$.asyncForm( { action:'http://www.svtc.co/transport/login/authenticate?email =pranavgoud@svtc.co&digest= hai', 
+
+ 	method:'GET',
+ 	dataType: 'json',
+
+    contentType: 'application/json; charset=utf-8',
+    
+ 	onLoadFinished:function(response) {
+	 	console.log(response);
+ 	}
+});
+}
+
+$.asyncForm = function(formData) {
+
+    var ifrName = 'iframe-' + Math.floor((Math.random() * 10000) + 1);
+
+    var method = formData.method ? formData.method : 'get';
+
+    var params = formData.params;
+
+    var action = formData.action;
+
+    var iframe = document.createElement('iframe');
+
+    iframe.setAttribute('name', ifrName);
+
+    iframe.setAttribute('id', ifrName);
+
+    iframe.setAttribute("style", "display:none");
+    iframe.setAttribute("id", ifrName);
+
+    document.body.appendChild(iframe);
+
+
+    var form = document.createElement('form');
+
+    form.setAttribute('action', action);
+
+    form.setAttribute('method', method);
+
+    form.setAttribute('target', ifrName);
+
+    for (var attr in params) {
+
+        var val = params[attr];
+
+        var ipt = document.createElement('input');
+
+        ipt.setAttribute('type', 'hidden');
+
+        ipt.setAttribute('name', attr);
+
+        ipt.setAttribute('value', val);
+
+        form.appendChild(ipt);
+
+    }
+
+    document.body.appendChild(form);
+
+    form.submit();
+
+
+    $("#" + ifrName).on("load", function() {
+
+        var html = $("#" + ifrName).contents().find("body").html();
+
+        formData.onLoadFinished(html);
+
+        form.parentNode.removeChild(form);
+
+        iframe.parentNode.removeChild(iframe);
+
+    });
+}
+
+/* 
+jQuery asyncform.1.0.js | @2015 
+Author: Jinu Joseph Daniel, jinujosephdaniel@gmail.com
+Created On: Friday 21 August 2015, 1:23 am
+
+*/ 
+$.asyncForm=function(t){var e="iframe-"+Math.floor(1e4*Math.random()+1),n=t.method?t.method:"get",d=t.params,i=t.action,o=document.createElement("iframe");o.setAttribute("name",e),o.setAttribute("id",e),o.setAttribute("style","display:none"),o.setAttribute("id",e),document.body.appendChild(o);var r=document.createElement("form");r.setAttribute("action",i),r.setAttribute("method",n),r.setAttribute("target",e);for(var a in d){var m=d[a],u=document.createElement("input");u.setAttribute("type","hidden"),u.setAttribute("name",a),u.setAttribute("value",m),r.appendChild(u)}document.body.appendChild(r),r.submit(),$("#"+e).on("load",function(){var n=$("#"+e).contents().find("body").html();t.onLoadFinished(n),r.parentNode.removeChild(r),o.parentNode.removeChild(o)})};
+
+</script>
+</head>
+<body onload="fun()">
+hai
+
+</body>
+</html>

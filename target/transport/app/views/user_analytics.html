@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HOOP</title>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="all" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="../../admin/css/styles.css" media="all" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.1/modernizr.min.js"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <script src="../../admin/js/jquery-1.4.1.js" type="text/javascript"></script>
+  
+  <script src="../../admin/js/jspdf.js" type="text/javascript"></script>
+  <script src="../../admin/js/FileSaver.js" type="text/javascript"></script>
+  <script src="../../admin/js/zlib.js" type="text/javascript"></script>
+  <script src="../../admin/js/png.js" type="text/javascript"></script>
+  <script src="../../admin/js/addimage.js" type="text/javascript"></script>
+  <script src="../../admin/js/png_support.js" type="text/javascript"></script>
+  <script src="../../admin/js/jspdf.debug.js" type="text/javascript"></script>
+  <script src="../../admin/js/jspdf.min.js" type="text/javascript"></script>
+  <script src="../../admin/js/jspdf.plugin.autotable.js" type="text/javascript"></script>
+  
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
+  <style>
+  	table thead tr {
+    	page-break-inside: avoid;
+	}
+	table tbody tr {
+    	page-break-inside: avoid;
+	}
+  </style>	
+  
+  
+  <script>
+  $( document ).ready(function() {
+	    $('#button1').click(function() {		    
+		      
+	    	var selectedCriterionText = $('#criterion :selected').text();
+	    	var selectedCriterionValue = $('#criterion :selected').val();
+	    	var selectedFromDate = $('#from_date').val();
+	    	var selectedToDate = $('#to_date').val();
+	    	var selectedYear = $('#year :selected').val()
+	    		
+	    	var selectedCountryText = '';
+	    	if(selectedCriterionValue == 'state'){
+	    		selectedCountryText = $('#country :selected').text();
+	    	}
+	    		
+	    	var selectedYearText = '';
+	    	if(selectedCriterionValue == 'monthly_registration' | selectedCriterionValue == 'monthly_access' | selectedCriterionValue == 'monthly_push_pull'){
+	    		selectedYearText = $('#year :selected').text();
+	    	}
+	    	var pageurl = '/hoop/admin/reports/users/criterion_wise_counts?'+'criterion='+selectedCriterionValue+'&'+
+														            'state_country='+selectedCountryText+'&'+
+														            'from_date='+selectedFromDate+'&'+
+														            'to_date='+selectedToDate+'&'+															            
+														            'year='+selectedYearText;
+            
+	        $.ajax({
+	            type: 'GET',
+	            url: '/hoop/admin/reports/users/criterion_wise_counts?'+'criterion='+selectedCriterionValue+'&'+
+															            'state_country='+selectedCountryText+'&'+
+															            'from_date='+selectedFromDate+'&'+
+															            'to_date='+selectedToDate+'&'+															            
+															            'year='+selectedYearText,															   
+	            dataType: 'json',
+	            contentType: 'application/json; charset=utf-8',
+	            success: function(response) {	            	
+	            	            	
+	            	var user = "";
+	            	var tables = "";
+	            	var table = "";
+	            	
+	               	var table_rows = "";
+	            	var result = "";
+	            	var resultsList = response;
+	            	for(var i=0; i<resultsList.length; i++){
+	            		result = resultsList[i];	
+	            		//var citerion_value = Object.keys(result)[1];
+	            		if(selectedCriterionValue != "daily_updated_contacts_actions" & 
+	            				selectedCriterionValue != "daily_connections" &
+	            				selectedCriterionValue != "daily_invites_registers"){
+		            		table_rows = table_rows + 
+		            					"<tr width=100%>"+
+			            					"<td width=50% style='text-align:left; padding-left:3px; padding-right:3px'>" + result[selectedCriterionValue] + "</td>"+
+			            					"<td width=50% style='text-align:left; padding-left:3px; padding-right:3px'>" + result.count + "</td>"+		            							            						
+		            					"</tr>";
+	            		} else {
+	            			if(selectedCriterionValue == "daily_updated_contacts_actions"){
+		            			table_rows = table_rows + 
+	        					"<tr width=100%>"+
+	            					"<td width=55% style='text-align:left; padding-left:3px; padding-right:3px'>" + result[selectedCriterionValue] + "</td>"+
+	            					"<td width=25% style='text-align:left; padding-left:3px; padding-right:3px'>" + result.download_count + "</td>"+		
+	            					"<td width=20% style='text-align:left; padding-left:3px; padding-right:3px'>" + result.ignore_count + "</td>"+		            					
+	        					"</tr>";
+	            			}
+	            			if(selectedCriterionValue == "daily_connections"){
+		            			table_rows = table_rows + 
+	        					"<tr width=100%>"+
+	            					"<td width=22% style='text-align:left; padding-left:3px; padding-right:3px'>" + result[selectedCriterionValue] + "</td>"+
+	            					"<td width=36% style='text-align:left; padding-left:3px; padding-right:3px'>" + result.exchange_connect_count + "</td>"+		
+	            					"<td width=42% style='text-align:left; padding-left:3px; padding-right:3px'>" + result.upload_connect_count + "</td>"+		            					
+	        					"</tr>";
+	            			}
+	            			if(selectedCriterionValue == "daily_invites_registers"){
+		            			table_rows = table_rows + 
+	        					"<tr width=100%>"+
+	            					"<td width=55% style='text-align:left; padding-left:3px; padding-right:3px'>" + result[selectedCriterionValue] + "</td>"+
+	            					"<td width=25% style='text-align:left; padding-left:3px; padding-right:3px'>" + result.invites_count + "</td>"+		
+	            					"<td width=20% style='text-align:left; padding-left:3px; padding-right:3px'>" + result.registers_count + "</td>"+		            					
+	        					"</tr>";
+	            			}
+	            			
+	            			
+	            		}
+	            	}						
+					
+	            	var first_column_header = "";
+	            	if(selectedCriterionValue == "daily_updated_contacts_actions" | 
+		            			selectedCriterionValue == "daily_connections" |
+		            			selectedCriterionValue == "daily_invites_registers" |
+		            			selectedCriterionValue == "daily_user_detail_missing_access_requests" |
+		            			selectedCriterionValue == "daily_registration" |
+		            			selectedCriterionValue == "daily_access" |
+		            			selectedCriterionValue == "daily_push_pull"	            			
+	            			){
+	            		first_column_header = "Date";
+	            	} else {
+	            		if(selectedCriterionValue == "monthly_registration" | 
+							            			selectedCriterionValue == "monthly_access" |
+							            			selectedCriterionValue == "monthly_push_pull"	            			
+						            			){
+	            			first_column_header = "Month";
+	            		} else {
+	            			first_column_header = selectedCriterionText;
+	            		}
+	            	}
+	            	
+	            	var table_header = "";
+	            	if(selectedCriterionValue != "daily_updated_contacts_actions" & 
+	            			selectedCriterionValue != "daily_connections" &
+	            			selectedCriterionValue != "daily_invites_registers"){
+		            	table_header = "<thead><tr width=100%>"+
+								            	"<th width=50% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +first_column_header + "</th>"+
+								            	"<th width=50% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Count" + "</th>"+	            						
+											"</tr></thead>";
+	            	} else {
+	            		if(selectedCriterionValue == "daily_updated_contacts_actions"){
+		            		table_header = "<tr width=100%>"+
+								            	"<td width=55% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +first_column_header + "</td>"+
+								            	"<td width=25% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Downloads" + "</td>"+	
+								            	"<td width=20% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Ignores" + "</td>"+								            	
+											"</tr>";
+	            		}
+	            		if(selectedCriterionValue == "daily_connections"){
+		            		table_header = "<tr width=100%>"+
+								            	"<td width=22% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +first_column_header + "</td>"+
+								            	"<td width=36% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Exc Connections" + "</td>"+	
+								            	"<td width=42% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Upload Connections" + "</td>"+								            	
+											"</tr>";
+	            		}
+	            		if(selectedCriterionValue == "daily_invites_registers"){
+		            		table_header = "<tr width=100%>"+
+								            	"<td width=55% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" + first_column_header + "</td>"+
+								            	"<td width=25% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Invites" + "</td>"+	
+								            	"<td width=20% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Registers" + "</td>"+								            	
+											"</tr>";
+	            		}
+	            	}
+	            	table = "<table width=45% align=center>" + table_header + "<tbody>" +table_rows + "</tbody>" + "</table>";
+	            		            	
+	            	$('#results').html(table);  
+
+
+	            	var title = selectedCriterionText + ' Analytics';
+	            	var options = {'title':title, 
+	            			   'fontSize': 16,
+	            				'is3D':true,
+			                       'width':600,
+			                       'height':350,
+			                       'legend':{'textStyle': {'fontSize':14}}
+	            	               };
+	            	var chartType ='';
+	            	if(selectedCriterionValue == 'daily_registration' | 
+	            			selectedCriterionValue == 'daily_access' | 
+	            			selectedCriterionValue == 'daily_push_pull' | 
+	            			selectedCriterionValue == 'monthly_registration' | 
+	            			selectedCriterionValue == 'monthly_access' | 
+	            			selectedCriterionValue == 'monthly_push_pull' | 
+	            			selectedCriterionValue == 'hourly_access' | 
+	            			selectedCriterionValue == 'daily_updated_contacts_actions' |
+	            			selectedCriterionValue == 'daily_user_detail_missing_access_requests' |
+	            			selectedCriterionValue == 'daily_connections' |
+	            			selectedCriterionValue == 'daily_invites_registers'){
+	            		chartType = 'line';
+	            	} else {
+	            		chartType = 'pie';
+	            	}
+	            	
+	            	drawChart(selectedCriterionText, 'User Count', selectedCriterionValue, resultsList, options, chartType);
+	            },
+	            error: function(error) {
+	                console.log(error);
+	            }
+	        });
+	    });
+	    
+	    	    
+	    $('#criterion').change(function() {
+	    	if($('#criterion :selected').val() == 'state'){
+	    		$('#country').css("visibility", 'visible');
+	    		$('#country').css("width", 250);	    		
+	    	}else{
+	    		$('#country').css("visibility", 'hidden');
+	    		$('#country').css("width", 0);
+	    	}
+	    	
+	    	if($('#criterion :selected').val() == 'daily_registration' | 
+	    			$('#criterion :selected').val() == 'daily_access' | 
+	    			$('#criterion :selected').val() == 'daily_push_pull' | 
+	    			$('#criterion :selected').val() == 'user_access_ranges_over_a_period' |
+	    			$('#criterion :selected').val() == 'daily_updated_contacts_actions' |
+	    			$('#criterion :selected').val() == 'daily_user_detail_missing_access_requests' |
+	    			$('#criterion :selected').val() == 'daily_connections' |
+	    			$('#criterion :selected').val() == 'daily_invites_registers' 	    			
+	    		){
+	    		$('#from_date').css("visibility", 'visible');
+	    		$('#from_date').css("width", 125);	
+	    		
+	    		$('#to_date').css("visibility", 'visible');
+	    		$('#to_date').css("width", 125);	    		
+	    	}else{
+	    		if($('#criterion :selected').val() == 'hourly_access'){
+	    			$('#from_date').css("visibility", 'visible');
+		    		$('#from_date').css("width", 125);
+		    		
+		    		$('#to_date').css("visibility", 'hidden');
+		    		$('#to_date').css("width", 0); 
+	    		} else {
+		    		$('#from_date').css("visibility", 'hidden');
+		    		$('#from_date').css("width", 0);
+		    		
+		    		$('#to_date').css("visibility", 'hidden');
+		    		$('#to_date').css("width", 0);    	
+	    		}
+	    	}	    		    	
+	    	
+	    	
+	    	if($('#criterion :selected').val() == 'monthly_registration' | $('#criterion :selected').val() == 'monthly_access' | $('#criterion :selected').val() == 'monthly_push_pull'){
+	    		$('#year').css("visibility", 'visible');
+	    		$('#year').css("width", 130);	    		
+	    	}else{
+	    		$('#year').css("visibility", 'hidden');
+	    		$('#year').css("width", 0);
+	    	}
+	    	
+	    });
+	    
+	    
+	    
+	});
+	  
+	function drawChart(firstColumnHeader, secondColumnHeader, selectedCriterionValue, resultsList, options, chartType){
+
+	      google.charts.load('current', {'packages':['corechart']});
+
+	      google.charts.setOnLoadCallback(drawChart);
+		  
+	      function drawChart() {			      
+		      var data = new google.visualization.DataTable();
+ 
+		      if(firstColumnHeader != "Updated Contact Actions" & 
+		    	  	firstColumnHeader != "Daily Connections" &
+		    	  	firstColumnHeader != "Daily Invites And Registers"){
+			      data.addColumn('string', firstColumnHeader);
+			      data.addColumn('number', secondColumnHeader);			      
+	          } else {
+				if(firstColumnHeader == "Updated Contact Actions"){
+			      data.addColumn('string', firstColumnHeader);
+			      data.addColumn('number', "Downloads");	   
+			      data.addColumn('number', "Ignores");  
+				}
+				if(firstColumnHeader == "Daily Connections"){
+				  data.addColumn('string', firstColumnHeader);
+				  data.addColumn('number', "Exchange Connects");	   
+				  data.addColumn('number', "Upload Connects");  
+				}
+				if(firstColumnHeader == "Daily Invites And Registers"){
+				  data.addColumn('string', firstColumnHeader);
+				  data.addColumn('number', "Invites");	   
+				  data.addColumn('number', "Registers");  
+				}					
+	      	  }
+		      		        
+		      for(var i=0; i<resultsList.length; i++){
+	        	result = resultsList[i];
+	        	if(firstColumnHeader != "Updated Contact Actions" & 
+	        			firstColumnHeader != "Daily Connections" &
+	        			firstColumnHeader != "Daily Invites And Registers"){
+	        		data.addRow([result[selectedCriterionValue], parseInt(result.count)]);
+	        	} else {
+	        		if(firstColumnHeader == "Updated Contact Actions"){
+	        			data.addRow([result[selectedCriterionValue], parseInt(result.download_count), parseInt(result.ignore_count)]);
+	        		}
+	        		if(firstColumnHeader == "Daily Connections"){
+	        			data.addRow([result[selectedCriterionValue], parseInt(result.exchange_connect_count), parseInt(result.upload_connect_count)]);
+	        		}
+	        		if(firstColumnHeader == "Daily Invites And Registers"){
+	        			data.addRow([result[selectedCriterionValue], parseInt(result.invites_count), parseInt(result.registers_count)]);
+	        		}        		
+	        	}
+	          }
+				
+		      var chart = '';
+		      if(chartType == 'pie'){
+		    	  chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+		      } 
+		      if(chartType == 'line'){
+		    	  chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+		      }
+		      
+		      /* code to add a listener to make a image of chart inside a #graph-images*/
+		      google.visualization.events.addListener(chart, 'ready', function () {
+		    	  var content = '<img src="' + chart.getImageURI() + '">';
+		    	  $('#graph-images').append(content);
+		      }); 
+		      /*************************************************************************/
+		      
+		      chart.draw(data, options);		      
+		      
+		      generatePDF(firstColumnHeader, secondColumnHeader, selectedCriterionValue, resultsList);
+		      //generateTablePDF();
+
+			  document.getElementById("graph-images").innerHTML ="";
+	      }
+	}
+
+	function generatePDF(firstColumnHeader, secondColumnHeader, selectedCriterionValue, resultsList) {
+		var doc = new jsPDF('p', 'pt', 'a4', false) /* Creates a new Document*/
+		//var doc = new jsPDF('p', 'pt', 'letter') /* Creates a new Document*/
+		var pageHeight = doc.internal.pageSize.height;
+		doc.setFontSize(14); /* Define font size for the document */
+		 
+		var yAxis = 70;
+		var imageTags = $('#graph-images img');
+		 		        
+		var someText = 'Hoop Analystics Report';
+		doc.text(60, yAxis, someText);  
+		yAxis = yAxis + 20;  
+		try {
+			doc.addImage(imageTags[0], 'png', 90, yAxis, 400, 250, undefined, 'none');
+			yAxis = yAxis+ 250;  
+		} catch (e) {
+		       doc.text(120, yAxis + 30, 'SOME ERROR OCCURRED WHILE ADDING IMAGE');
+		       yAxis = yAxis + 20  
+		}
+		 
+		specialElementHandlers = {
+		        // element with id of "bypass" - jQuery style selector
+		        '#bypassme': function (element, renderer) {
+		            // true = "handled elsewhere, bypass text extraction"
+		            return true
+		        }
+		    };
+		    margins = {
+		        top: 60,
+		        bottom: 60,
+		        left: 70,
+		        width: 300
+		    };
+		  		    
+		    // all coords and widths are in jsPDF instance's declared units
+		    // 'inches' in this case
+
+		    doc.fromHTML(
+			    $('#results')[0], // HTML string or DOM elem ref.
+			    65, // x coord
+			    355, // y coord			    
+			    { 
+			    	'width': 250,
+			    	'pagesplit': false, //This will work for multiple pages
+			    	'elementHandlers': specialElementHandlers
+		    	},
+		        		    	
+		    function (dispose) {
+		        // dispose: object with X, Y of the last line add to the PDF 
+		        //          this allow the insertion of new lines after html
+		        doc.save('Test.pdf');
+		    }, margins);
+						
+		//doc.save('Chart_Report' + '.pdf') /* Prompts user to save file on his/her machine */
+			
+
+	}
+		 
+	
+   </script>
+  
+  <style>
+		table, th, td {
+		    border: 1px solid black;
+		}
+  </style>
+
+</head>
+  <body>
+    <header class="clearfix">
+	  
+      <div  class="menu pull-right" data-position="right">
+		<a href="#" style="color:white">Settings</a> | <a href="#" style="color: white">Log out</a>  
+      </div>
+	  
+	  <div style="text-align: center; vertical-align:middle; font-size:30px">
+			HOOP
+      </div>
+
+    </header>
+
+    <div class="overlay"></div>
+
+    <nav class="left">
+      <ul>
+        <li>
+          <a href="#">New Dispatch</a>
+        </li>
+        <li>
+          <a href="#">New Invoice</a>
+        </li>
+        <li>
+          <a href="#">Dispatch Status</a>
+        </li>
+        <li>
+          <a href="#">Dispatch Closing</a>
+        </li>
+        <li>
+          <a href="#">Fuel Entry</a>
+        </li>
+        <li>
+          <a href="#">Report</a>
+        </li>
+        <li>
+          <a href="#">Accounts</a>
+        </li>
+      </ul>
+    </nav>
+
+ <form name="user_analytics" id="user_analytics">
+ 
+	<h2 style="text-align: center; text-decoration: underline;">Users Analytics Report</h2>
+
+	</div>
+   <br>
+	 <table align=center border="0px solid black">
+		<tr >
+			<td>
+				<span>	
+				<label>Criterion</label>
+				<select id="criterion">
+					  <option selected="selected" style="display:none">Select</option>
+					  <option value="daily_registration">Daily Registration</option>		
+					  <option value="daily_access">Daily Access</option>
+					  <option value="daily_push_pull">Daily Push Pull</option>					  	
+					  <option value="monthly_registration">Monthly Registration</option>	
+					  <option value="monthly_access">Monthly Access</option>	
+					  <option value="monthly_push_pull">Monthly Push Pull</option>
+					  <option value="country">Country</option>					  
+					  <option value="state">State</option>
+					  <option value="profession">Profession</option>
+					  <option value="company_type">Company Type</option>
+					  <option value="designation">Designation</option>
+					  <option value="business_nature">Business Nature</option>
+					  <option value="education_level">Education Level</option>
+					  <option value="course_name">Course</option>	
+					  <option value="user_type">User Type</option>	
+					  <option value="user_details_update">User Details Update</option>	
+					  <option value="user_access_ranges_over_a_period">User Access Ranges</option>	
+					  <option value="hourly_access">Hourly Access</option>	
+					  <option value="daily_updated_contacts_actions">Updated Contact Actions</option>	
+					  <option value="daily_user_detail_missing_access_requests">Daily User Detail Missing Access Requests</option>	
+					  <option value="daily_connections">Daily Connections</option>	
+					  <option value="daily_invites_registers">Daily Invites And Registers</option>	
+				</select>
+				
+				<input type=text id="from_date" style="visibility:hidden; width:0">
+				<input type=text id="to_date" style="visibility:hidden; width:0">
+				
+				<select id="year" style="visibility:hidden; width:0">
+					<option selected="selected" style="display:none">Select Year</option>
+					<option value="2016">2016</option>
+					<option value="2017">2017</option>
+					<option value="2018">2018</option>					
+					<option value="2019">2019</option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>					
+				</select>
+				
+				<select id="country" style="visibility:hidden; width:0">
+					<option selected="selected" style="display:none">Select Country</option>
+					<option value="AF">Afghanistan</option>
+					<option value="AX">Åland Islands</option>
+					<option value="AL">Albania</option>
+					<option value="DZ">Algeria</option>
+					<option value="AS">American Samoa</option>
+					<option value="AD">Andorra</option>
+					<option value="AO">Angola</option>
+					<option value="AI">Anguilla</option>
+					<option value="AQ">Antarctica</option>
+					<option value="AG">Antigua and Barbuda</option>
+					<option value="AR">Argentina</option>
+					<option value="AM">Armenia</option>
+					<option value="AW">Aruba</option>
+					<option value="AU">Australia</option>
+					<option value="AT">Austria</option>
+					<option value="AZ">Azerbaijan</option>
+					<option value="BS">Bahamas</option>
+					<option value="BH">Bahrain</option>
+					<option value="BD">Bangladesh</option>
+					<option value="BB">Barbados</option>
+					<option value="BY">Belarus</option>
+					<option value="BE">Belgium</option>
+					<option value="BZ">Belize</option>
+					<option value="BJ">Benin</option>
+					<option value="BM">Bermuda</option>
+					<option value="BT">Bhutan</option>
+					<option value="BO">Bolivia, Plurinational State of</option>
+					<option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+					<option value="BA">Bosnia and Herzegovina</option>
+					<option value="BW">Botswana</option>
+					<option value="BV">Bouvet Island</option>
+					<option value="BR">Brazil</option>
+					<option value="IO">British Indian Ocean Territory</option>
+					<option value="BN">Brunei Darussalam</option>
+					<option value="BG">Bulgaria</option>
+					<option value="BF">Burkina Faso</option>
+					<option value="BI">Burundi</option>
+					<option value="KH">Cambodia</option>
+					<option value="CM">Cameroon</option>
+					<option value="CA">Canada</option>
+					<option value="CV">Cape Verde</option>
+					<option value="KY">Cayman Islands</option>
+					<option value="CF">Central African Republic</option>
+					<option value="TD">Chad</option>
+					<option value="CL">Chile</option>
+					<option value="CN">China</option>
+					<option value="CX">Christmas Island</option>
+					<option value="CC">Cocos (Keeling) Islands</option>
+					<option value="CO">Colombia</option>
+					<option value="KM">Comoros</option>
+					<option value="CG">Congo</option>
+					<option value="CD">Congo, the Democratic Republic of the</option>
+					<option value="CK">Cook Islands</option>
+					<option value="CR">Costa Rica</option>
+					<option value="CI">Côte d'Ivoire</option>
+					<option value="HR">Croatia</option>
+					<option value="CU">Cuba</option>
+					<option value="CW">Curaçao</option>
+					<option value="CY">Cyprus</option>
+					<option value="CZ">Czech Republic</option>
+					<option value="DK">Denmark</option>
+					<option value="DJ">Djibouti</option>
+					<option value="DM">Dominica</option>
+					<option value="DO">Dominican Republic</option>
+					<option value="EC">Ecuador</option>
+					<option value="EG">Egypt</option>
+					<option value="SV">El Salvador</option>
+					<option value="GQ">Equatorial Guinea</option>
+					<option value="ER">Eritrea</option>
+					<option value="EE">Estonia</option>
+					<option value="ET">Ethiopia</option>
+					<option value="FK">Falkland Islands (Malvinas)</option>
+					<option value="FO">Faroe Islands</option>
+					<option value="FJ">Fiji</option>
+					<option value="FI">Finland</option>
+					<option value="FR">France</option>
+					<option value="GF">French Guiana</option>
+					<option value="PF">French Polynesia</option>
+					<option value="TF">French Southern Territories</option>
+					<option value="GA">Gabon</option>
+					<option value="GM">Gambia</option>
+					<option value="GE">Georgia</option>
+					<option value="DE">Germany</option>
+					<option value="GH">Ghana</option>
+					<option value="GI">Gibraltar</option>
+					<option value="GR">Greece</option>
+					<option value="GL">Greenland</option>
+					<option value="GD">Grenada</option>
+					<option value="GP">Guadeloupe</option>
+					<option value="GU">Guam</option>
+					<option value="GT">Guatemala</option>
+					<option value="GG">Guernsey</option>
+					<option value="GN">Guinea</option>
+					<option value="GW">Guinea-Bissau</option>
+					<option value="GY">Guyana</option>
+					<option value="HT">Haiti</option>
+					<option value="HM">Heard Island and McDonald Islands</option>
+					<option value="VA">Holy See (Vatican City State)</option>
+					<option value="HN">Honduras</option>
+					<option value="HK">Hong Kong</option>
+					<option value="HU">Hungary</option>
+					<option value="IS">Iceland</option>
+					<option value="IN">India</option>
+					<option value="ID">Indonesia</option>
+					<option value="IR">Iran, Islamic Republic of</option>
+					<option value="IQ">Iraq</option>
+					<option value="IE">Ireland</option>
+					<option value="IM">Isle of Man</option>
+					<option value="IL">Israel</option>
+					<option value="IT">Italy</option>
+					<option value="JM">Jamaica</option>
+					<option value="JP">Japan</option>
+					<option value="JE">Jersey</option>
+					<option value="JO">Jordan</option>
+					<option value="KZ">Kazakhstan</option>
+					<option value="KE">Kenya</option>
+					<option value="KI">Kiribati</option>
+					<option value="KP">Korea, Democratic People's Republic of</option>
+					<option value="KR">Korea, Republic of</option>
+					<option value="KW">Kuwait</option>
+					<option value="KG">Kyrgyzstan</option>
+					<option value="LA">Lao People's Democratic Republic</option>
+					<option value="LV">Latvia</option>
+					<option value="LB">Lebanon</option>
+					<option value="LS">Lesotho</option>
+					<option value="LR">Liberia</option>
+					<option value="LY">Libya</option>
+					<option value="LI">Liechtenstein</option>
+					<option value="LT">Lithuania</option>
+					<option value="LU">Luxembourg</option>
+					<option value="MO">Macao</option>
+					<option value="MK">Macedonia, the former Yugoslav Republic of</option>
+					<option value="MG">Madagascar</option>
+					<option value="MW">Malawi</option>
+					<option value="MY">Malaysia</option>
+					<option value="MV">Maldives</option>
+					<option value="ML">Mali</option>
+					<option value="MT">Malta</option>
+					<option value="MH">Marshall Islands</option>
+					<option value="MQ">Martinique</option>
+					<option value="MR">Mauritania</option>
+					<option value="MU">Mauritius</option>
+					<option value="YT">Mayotte</option>
+					<option value="MX">Mexico</option>
+					<option value="FM">Micronesia, Federated States of</option>
+					<option value="MD">Moldova, Republic of</option>
+					<option value="MC">Monaco</option>
+					<option value="MN">Mongolia</option>
+					<option value="ME">Montenegro</option>
+					<option value="MS">Montserrat</option>
+					<option value="MA">Morocco</option>
+					<option value="MZ">Mozambique</option>
+					<option value="MM">Myanmar</option>
+					<option value="NA">Namibia</option>
+					<option value="NR">Nauru</option>
+					<option value="NP">Nepal</option>
+					<option value="NL">Netherlands</option>
+					<option value="NC">New Caledonia</option>
+					<option value="NZ">New Zealand</option>
+					<option value="NI">Nicaragua</option>
+					<option value="NE">Niger</option>
+					<option value="NG">Nigeria</option>
+					<option value="NU">Niue</option>
+					<option value="NF">Norfolk Island</option>
+					<option value="MP">Northern Mariana Islands</option>
+					<option value="NO">Norway</option>
+					<option value="OM">Oman</option>
+					<option value="PK">Pakistan</option>
+					<option value="PW">Palau</option>
+					<option value="PS">Palestinian Territory, Occupied</option>
+					<option value="PA">Panama</option>
+					<option value="PG">Papua New Guinea</option>
+					<option value="PY">Paraguay</option>
+					<option value="PE">Peru</option>
+					<option value="PH">Philippines</option>
+					<option value="PN">Pitcairn</option>
+					<option value="PL">Poland</option>
+					<option value="PT">Portugal</option>
+					<option value="PR">Puerto Rico</option>
+					<option value="QA">Qatar</option>
+					<option value="RE">Réunion</option>
+					<option value="RO">Romania</option>
+					<option value="RU">Russian Federation</option>
+					<option value="RW">Rwanda</option>
+					<option value="BL">Saint Barthélemy</option>
+					<option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
+					<option value="KN">Saint Kitts and Nevis</option>
+					<option value="LC">Saint Lucia</option>
+					<option value="MF">Saint Martin (French part)</option>
+					<option value="PM">Saint Pierre and Miquelon</option>
+					<option value="VC">Saint Vincent and the Grenadines</option>
+					<option value="WS">Samoa</option>
+					<option value="SM">San Marino</option>
+					<option value="ST">Sao Tome and Principe</option>
+					<option value="SA">Saudi Arabia</option>
+					<option value="SN">Senegal</option>
+					<option value="RS">Serbia</option>
+					<option value="SC">Seychelles</option>
+					<option value="SL">Sierra Leone</option>
+					<option value="SG">Singapore</option>
+					<option value="SX">Sint Maarten (Dutch part)</option>
+					<option value="SK">Slovakia</option>
+					<option value="SI">Slovenia</option>
+					<option value="SB">Solomon Islands</option>
+					<option value="SO">Somalia</option>
+					<option value="ZA">South Africa</option>
+					<option value="GS">South Georgia and the South Sandwich Islands</option>
+					<option value="SS">South Sudan</option>
+					<option value="ES">Spain</option>
+					<option value="LK">Sri Lanka</option>
+					<option value="SD">Sudan</option>
+					<option value="SR">Suriname</option>
+					<option value="SJ">Svalbard and Jan Mayen</option>
+					<option value="SZ">Swaziland</option>
+					<option value="SE">Sweden</option>
+					<option value="CH">Switzerland</option>
+					<option value="SY">Syrian Arab Republic</option>
+					<option value="TW">Taiwan, Province of China</option>
+					<option value="TJ">Tajikistan</option>
+					<option value="TZ">Tanzania, United Republic of</option>
+					<option value="TH">Thailand</option>
+					<option value="TL">Timor-Leste</option>
+					<option value="TG">Togo</option>
+					<option value="TK">Tokelau</option>
+					<option value="TO">Tonga</option>
+					<option value="TT">Trinidad and Tobago</option>
+					<option value="TN">Tunisia</option>
+					<option value="TR">Turkey</option>
+					<option value="TM">Turkmenistan</option>
+					<option value="TC">Turks and Caicos Islands</option>
+					<option value="TV">Tuvalu</option>
+					<option value="UG">Uganda</option>
+					<option value="UA">Ukraine</option>
+					<option value="AE">UAE</option>
+					<option value="GB">UK</option>
+					<option value="US">USA</option>
+					<option value="UM">United States Minor Outlying Islands</option>
+					<option value="UY">Uruguay</option>
+					<option value="UZ">Uzbekistan</option>
+					<option value="VU">Vanuatu</option>
+					<option value="VE">Venezuela, Bolivarian Republic of</option>
+					<option value="VN">Viet Nam</option>
+					<option value="VG">Virgin Islands, British</option>
+					<option value="VI">Virgin Islands, U.S.</option>
+					<option value="WF">Wallis and Futuna</option>
+					<option value="EH">Western Sahara</option>
+					<option value="YE">Yemen</option>
+					<option value="ZM">Zambia</option>
+					<option value="ZW">Zimbabwe</option>
+				</select>
+				<input type="button" id="button1" value="Submit"/>
+				</span>				
+			</td>
+		</tr>
+	</table>	
+ 
+</form>
+	<br>
+	<div id="results">	
+	</div>
+	
+	<br>
+	<div id="chart_div" align=center>	
+	</div>
+	
+	<div id='graph-images' >
+	</div>
+	
+	
+	
+	
+	<div id="chart-table">   
+	</div>
+<div>
+<table>
+<tr>
+<td></td>
+</tr>
+</table>
+</div>
+
+
+	<br><br>
+	
+ 
+</div>
+  </body>
+</html>

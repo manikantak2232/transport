@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>SVTC</title>
+
+<!-- Bootstrap -->
+<link href="../vendors/bootstrap/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Font Awesome -->
+<link href="../vendors/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet">
+<!-- NProgress -->
+<link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+<!-- iCheck -->
+<link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+<!-- bootstrap-progressbar -->
+<link
+	href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css"
+	rel="stylesheet">
+<!-- JQVMap -->
+<link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+<!-- bootstrap-daterangepicker -->
+<link href="../vendors/bootstrap-daterangepicker/daterangepicker.css"
+	rel="stylesheet">
+
+<!-- Custom Theme Style -->
+<link href="../build/css/custom.min.css" rel="stylesheet">
+<style>
+table.dataTable {
+	margin: 0 auto;
+}
+.morris-hover{position:absolute;z-index:1000;}
+</style>
+</head>
+
+<body class="nav-md" onload="monthDates();">
+	<div class="container body">
+		<div class="main_container">
+			<div class="col-md-3 left_col">
+				<div class="left_col scroll-view">
+					<div class="navbar nav_title" style="border: 0;">
+						<a href="dashboard.html" class="site_title"><i
+							class="fa fa-paw"></i> <span>svtc</span></a>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<!-- menu profile quick info -->
+					<div class="profile clearfix">
+						<div class="profile_pic">
+							<img src="images/img.jpg" alt="..."
+								class="img-circle profile_img">
+						</div>
+						<div class="profile_info">
+							<span>Welcome,</span>
+							<h2>Srinivas Goud</h2>
+						</div>
+					</div>
+					<!-- /menu profile quick info -->
+
+					<br />
+
+					<div id="sidebar-menu"
+						class="main_menu_side hidden-print main_menu">
+						<div class="menu_section">
+							<h3>General</h3>
+							<ul class="nav side-menu">
+								<li><a><i class="fa fa-home"></i> Home <span
+										class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="dashboard.html">Dashboard</a></li>
+									</ul></li>
+
+								<li><a><i class="fa fa-table"></i> Tables <span
+										class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="getFactoryDisaptchReportByFactory.html">Dispatch
+												Report</a></li>
+										<li><a href="getFactoryFuelByDateAdmin.html">Fuel
+												Report</a></li>
+										<li><a href="getTruckMaintenanceExpenditureAdmin.html">Maintenance
+												Expenditure</a></li>
+
+									</ul></li>
+
+								<li onclick="window.open('../app/views/payment.html','_blank')"><a
+									href="#"><i class="fa fa-money"></i> Accounts</a></li>
+
+
+							</ul>
+						</div>
+
+
+					</div>
+					<!-- /sidebar menu -->
+
+					<!-- /menu footer buttons -->
+					<div class="sidebar-footer hidden-small">
+						<a data-toggle="tooltip" data-placement="top" title="Settings">
+							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+						</a> <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+							<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+						</a> <a data-toggle="tooltip" data-placement="top" title="Lock"> <span
+							class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+						</a> <a data-toggle="tooltip" data-placement="top" title="Logout"
+							href="login.html"> <span class="glyphicon glyphicon-off"
+							aria-hidden="true"></span>
+						</a>
+					</div>
+					<!-- /menu footer buttons -->
+				</div>
+			</div>
+
+			<!-- top navigation -->
+			<div class="top_nav">
+				<div class="nav_menu">
+					<nav>
+						<div class="nav toggle">
+							<a id="menu_toggle"><i class="fa fa-bars"></i></a>
+						</div>
+
+						<ul class="nav navbar-nav navbar-right">
+							<li class=""><a href="javascript:;"
+								class="user-profile dropdown-toggle" data-toggle="dropdown"
+								aria-expanded="false"> <img src="images/img.jpg" alt="">Srinivas Goud
+									<span class=" fa fa-angle-down"></span>
+							</a>
+								<ul class="dropdown-menu dropdown-usermenu pull-right">
+									<li><a href="javascript:;"> Profile</a></li>
+									<li><a href="javascript:;"> <span
+											class="badge bg-red pull-right">50%</span> <span>Settings</span>
+									</a></li>
+									<li><a href="javascript:;">Help</a></li>
+									<li><a href="login.html"><i
+											class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+								</ul></li>
+
+							</li>
+						</ul>
+						</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<!-- top tiles -->
+				<div class="row tile_count">
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;">
+						<span class="count_top"><i class="fa fa-truck"></i> Trucks</span>
+						<div class="count" id="trucks_count">70</div>
+						<span class="count_bottom"> No of Trucks</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;" data-toggle="modal"
+						data-target="#myModal1" onclick="loading()">
+						<span class="count_top"><i class="fa fa-truck"></i>
+							Loading</span>
+						<div class="count yellow" id="loading_id">0</div>
+						<span class="count_bottom">Trucks At Loading</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;" data-toggle="modal"
+						data-target="#myModalUnloading" onclick="unloading()">
+						<span class="count_top"><i class="fa fa-truck"></i>
+							Unloading </span>
+						<div class="count green" id="unloading_id">0</div>
+						<span class="count_bottom">Trucks At Unloading</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;" data-toggle="modal"
+						data-target="#myModalBranch" onclick="branch()">
+						<span class="count_top"><i class="fa fa-building"></i> Branch
+							Office </span>
+						<div class="count" id="branch_office_id">0</div>
+						<span class="count_bottom">Trucks At BO</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;" data-toggle="modal"
+						data-target="#myModalSkca" onclick="skca()">
+						<span class="count_top"><i class="fa fa-building"></i> Skca </span>
+						<div class="count" id="skca_id">0</div>
+						<span class="count_bottom"> Truks At Skca</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;" data-toggle="modal"
+						data-target="#myModalIdle" onclick="idle()">
+						<span class="count_top"><i class="fa fa-truck"></i> Idle </span>
+						<div class="count red" class="count" id="idle_count">0</div>
+						<span class="count_bottom"> Idle Trucks</span>
+					</div>
+				</div>
+
+				<div class="row tile_count">
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;" data-toggle="modal"
+						data-target="#myModalTransit" onclick="transit()">
+						<span class="count_top"><i class="fa fa-truck"></i> Transit
+						</span>
+						<div class="count" id="transit_id">0</div>
+						<span class="count_bottom">Trucks in Transit</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;" data-toggle="modal"
+						data-target="#myModalTrip" onclick="trip()">
+						<span class="count_top"><i class="fa fa-truck"></i> Trip </span>
+						<div class="count" id="trip_id">0</div>
+						<span class="count_bottom">Trucks in Trip</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;"data-toggle="modal"
+						data-target="#myModalZuari" onclick="zuariTrucks()">
+						<span class="count_top"><i class="fa fa-industry"></i> Zuari</span>
+						<div class="count" id="zuari_id">0</div>
+						<span class="count_bottom"> Trucks at Zuari</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;"data-toggle="modal"
+						data-target="#myModalChettinad" onclick="chettinadTrucks()">
+						<span class="count_top"><i class="fa fa-industry"></i>
+							Chettinad</span>
+						<div class="count yellow" id="chettinad_id">0</div>
+						<span class="count_bottom">Trucks at Chettinad</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;"data-toggle="modal"
+						data-target="#myModalRamco" onclick="ramcoTrucks()">
+						<span class="count_top"><i class="fa fa-industry"></i> Ramco </span>
+						<div class="count" id="ramco_id">0</div>
+						<span class="count_bottom">Trucks At Ramco</span>
+					</div>
+
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;"data-toggle="modal"
+						data-target="#myModalBharathi" onclick="bharathiTrucks()">
+						<span class="count_top"><i class="fa fa-industry"></i> Bharathi
+						</span>
+						<div class="count" id="bharathi_id">0</div>
+						<span class="count_bottom"> Truks At Bharathi</span>
+					</div>
+				</div>
+
+				<div class="row tile_count">
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;"data-toggle="modal"
+						data-target="#myModalDeccan" onclick="deccanTrucks()">
+						<span class="count_top"><i class="fa fa-industry"></i> Deccan </span>
+						<div class="count" class="count" id="deccan_id">0</div>
+						<span class="count_bottom"> Trucks at Deccan</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;"data-toggle="modal"
+						data-target="#myModalAnjani" onclick="anjaniTrucks()">
+						<span class="count_top"><i class="fa fa-industry"></i> Anjani </span>
+						<div class="count" id="anjani_id">0</div>
+						<span class="count_bottom">Trucks in Anjani</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;"data-toggle="modal"
+						data-target="#myModalJsw" onclick="jswTrucks()">
+						<span class="count_top"><i class="fa fa-industry"></i> Jsw</span>
+						<div class="count" id="jsw_id">0</div>
+						<span class="count_bottom"> Trucks in Jsw</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;">
+						<span class="count_top"><i class="fa fa-money"></i>
+							Payments</span>
+						<div class="count yellow" id="payment_id">0</div>
+						<span class="count_bottom">Today Payment Amount</span>
+					</div>
+					<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count"
+						style="text-align: center;">
+						<span class="count_top"><i class="fa fa-money"></i> Receipts
+						</span>
+						<div class="count green" id="receipt_id">0</div>
+						<span class="count_bottom">Today Receipt Amount</span>
+					</div>
+				</div>
+				<!-- /top tiles -->
+
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="row x_title">
+							<div class="col-md-6">
+								<h3>
+									Factory Activities <small>Graph title sub-title</small>
+								</h3>
+							</div>
+							<div class="col-md-6">
+								<div id="reportrange" class="pull-right"
+									style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+									<i class="glyphicon glyphicon-calendar fa fa-calendar"></i> <span>December
+										30, 2014 - January 28, 2015</span> <b class="caret"></b>
+								</div>
+							</div>
+							<br>
+							<!-- page content -->
+							<div class="clearfix"></div>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Quantity Month Report <small>Session-1</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content1">
+											<div id="graph_bar_group1" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Quantity Month Report <small>Session-2</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content1">
+											<div id="graph_bar_group2" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								
+							<div class="clearfix"></div>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Freight Month Report <small>Session-1</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content1">
+											<div id="graph_bar_group3" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Freight Month Report <small>Session-2</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content1">
+											<div id="graph_bar_group4" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							<div class="row" >
+								<!-- bar chart -->
+								<div class="col-md-6 col-sm-6 col-xs-12" >
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Trip count <small>Session-1</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="graph_bar" style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+								<!-- /bar charts -->
+
+								<!-- bar charts group -->
+								<div class="col-md-6 col-sm-6 col-xs-12" >
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Trip Count <small>Session-2</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content1" >
+											<div id="graph_bar_group" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<!-- /bar charts group -->
+								<!-- bar charts group -->
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Fuel Expenditure <small>Session-1</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="graph_bar3" style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+								<!-- /bar charts -->
+
+
+
+								<!-- bar chart -->
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Fuel Expenditure <small>Session-2</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="graph_bar4" style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+
+								<!-- /Pie chart -->
+
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Quantity per Month <small></small>
+											</h2>
+
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content2">
+											<div id="graph_donut" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-md-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Freight per Month<small></small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="echart_pie" style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Quantity per day <small></small>
+											</h2>
+
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content2">
+											<div id="quantity_per_day"
+												style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-md-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Freight per day<small></small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="freight_per_day" style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Quantity per Week <small></small>
+											</h2>
+
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content2">
+											<div id="quantity_per_week"
+												style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-md-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Freight per Week<small></small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="freight_per_week"
+												style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Maintenance Expenditure <small>Session-1</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content2">
+											<div id="graphx" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								<!-- /bar charts group -->
+								<!-- bar charts group -->
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Maintenance Expenditure <small>Session-2</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content2">
+											<div id="graphx1" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								<!-- /bar charts group -->
+
+
+								<!-- bar chart -->
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Direct Expenditure <small>Session-1</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="graph_bar1" style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+								<!-- /bar charts -->
+
+
+
+								<!-- bar chart -->
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Direct Expenditure <small>Session-2</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="graph_bar2" style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+								<!-- /bar charts -->
+								<!-- bar chart -->
+
+								<!-- /bar charts -->
+
+								<!-- bar charts group -->
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Total Expenditure <small></small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content2">
+											<div id="graphx2" style="width: 100%; height: 300px;"></div>
+										</div>
+									</div>
+								</div>
+								<!-- /bar charts group -->
+
+								<div class="col-md-6 col-md-6 col-xs-12">
+									<div class="x_panel">
+										<div class="x_title">
+											<h2>
+												Fuel Expenditure <small>Bunks</small>
+											</h2>
+											<ul class="nav navbar-right panel_toolbox">
+
+											</ul>
+											<div class="clearfix"></div>
+										</div>
+										<div class="x_content">
+											<div id="echart_pie11" style="width: 100%; height: 290px;"></div>
+										</div>
+									</div>
+								</div>
+
+								<!-- /Pie chart -->
+							</div>
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModal1" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Loading Trucks</h4>
+											</div>
+											<div class="modal-body" style="text-align: center;">
+												<table id="example"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalUnloading" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Unloading Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleUnloading"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalBranch" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Branch Office Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleBranch"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalSkca" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Branch Office Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleSkca"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalIdle" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Branch Office Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleIdle"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalTransit" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Transit Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleTransit"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalTrip" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Transit Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleTrip"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalZuari" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Zuari Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleZuari"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalChettinad" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Chettinad Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleChettinad"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalRamco" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Ramco Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleRamco"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalBharathi" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Bharathi Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleBharathi"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalDeccan" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Deccan Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleDeccan"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalAnjani" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Anjani Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleAnjani"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+							<div class="container">
+
+								<!-- Modal -->
+								<div class="modal fade" id="myModalJsw" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Jsw Trucks</h4>
+											</div>
+											<div class="modal-body">
+												<table id="exampleJsw"
+													class="table table-striped table-bordered bulk_action"></table>
+											</div>
+											<div class="modal-footer"></div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+
+							<!-- footer content -->
+							<footer>
+								<div class="pull-right">
+									svtc - Bootstrap Admin Template by <a href="#"></a>
+								</div>
+								<div class="clearfix"></div>
+							</footer>
+							<!-- /footer content -->
+						</div>
+					</div>
+
+
+					<!-- jQuery -->
+					<script src="../vendors/jquery/dist/jquery.min.js"></script>
+					<!-- Bootstrap -->
+					<script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+					<!-- FastClick -->
+					<script src="../vendors/fastclick/lib/fastclick.js"></script>
+					<!-- NProgress -->
+					<script src="../vendors/nprogress/nprogress.js"></script>
+					<!-- Chart.js -->
+					<script src="../vendors/Chart.js/dist/Chart.min.js"></script>
+					<!-- gauge.js -->
+					<script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+					<!-- bootstrap-progressbar -->
+					<script
+						src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+					<!-- iCheck -->
+					<script src="../vendors/iCheck/icheck.min.js"></script>
+					<!-- Skycons -->
+					<script src="../vendors/skycons/skycons.js"></script>
+					<!-- Flot -->
+					<script src="../vendors/Flot/jquery.flot.js"></script>
+					<script src="../vendors/Flot/jquery.flot.pie.js"></script>
+					<script src="../vendors/Flot/jquery.flot.time.js"></script>
+					<script src="../vendors/Flot/jquery.flot.stack.js"></script>
+					<script src="../vendors/Flot/jquery.flot.resize.js"></script>
+					<!-- Flot plugins -->
+					<script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+					<script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+					<script src="../vendors/flot.curvedlines/curvedLines.js"></script>
+					<!-- DateJS -->
+					<script src="../vendors/DateJS/build/date.js"></script>
+					<!-- JQVMap -->
+					<script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
+					<script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+					<script
+						src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+					<!-- bootstrap-daterangepicker -->
+					<script src="../vendors/moment/min/moment.min.js"></script>
+					<script
+						src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+					<!-- morris.js -->
+					<script src="../vendors/raphael/raphael.min.js"></script>
+					<script src="../vendors/morris.js/morris.min.js"></script>
+					<!-- FastClick -->
+					<script src="../vendors/fastclick/lib/fastclick.js"></script>
+					<!-- NProgress -->
+					<script src="../vendors/nprogress/nprogress.js"></script>
+					<!-- ECharts -->
+					<script src="../vendors/echarts/dist/echarts.min.js"></script>
+					<script src="../vendors/echarts/map/js/world.js"></script>
+
+					<script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+					<script
+						src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+					<script
+						src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+					<script
+						src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+					<script src="../vendors/jszip/dist/jszip.min.js"></script>
+					<script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+					<script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+					<script
+						src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+					<script
+						src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+					<script
+						src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+					<script
+						src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+					<script
+						src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+					<script
+						src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+					<script
+						src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+					<script
+						src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+
+					<!-- Custom Theme Scripts -->
+					<script src="../build/js/custom.min.js"></script>
+					<script>
+					function fun(){
+						alert('hai');
+					}
+					</script>
+</body>
+</html>

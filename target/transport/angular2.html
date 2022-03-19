@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script>
+var app=angular.module("mymodule",[]);
+app.controller("mycontroller",function fun1($scope){
+	$scope.employee={"empId":101,"empName":'nani',"salary":10000};
+	$scope.student={"stuId":101,"stuName":'nani',"marks":100};
+});
+</script>
+</head>
+<body>
+
+<div ng-app ="mymodule" ng-controller="mycontroller">
+
+Emp Name: <input type="text" value="{{employee.empName}}">
+<br><br>
+Emp id: <input type="text" ng-model="employee.empId">
+
+</div>
+
+</body>
+</html>

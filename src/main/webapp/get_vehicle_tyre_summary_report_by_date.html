@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script src="jquery-1.4.1.js"></script>
+  <script type="text/javascript"> 
+			$(document).ready(function (){ 
+				$('#btTest').click(function () {
+					var requestData = new Object();
+					requestData.lower_date= $('#lower_date').val();
+					requestData.upper_date= $('#upper_date').val();				
+					$.ajax({
+						url: '/hoop/tyre/summaryreport/get/date',
+						type: 'POST',
+						data: JSON.stringify(requestData),
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+			            success: function(response) {
+			            	var vehicle= "";
+			            	var tables = "";
+			            	var table = "";
+			            	
+			            	var table_rows = "";
+			            	var vehicle = "";
+			            	var vehiclesList = response;
+			            	for(var i=0; i<vehiclesList.Vehicles.length; i++){
+			            		vehicle = vehiclesList.Vehicles[i];	
+			            	  	table_rows = table_rows + 
+				            					"<tr width=100%>"+
+					            					"<td width=5% style='text-align:left; padding-left:3px; padding-right:3px'>" + (i+1) + "</td>"+
+					            					"<td width=15% style='text-align:left; padding-left:3px; padding-right:3px'>" + vehicle.date + "</td>"+		            						
+				            						"<td width=10% style='text-align:left; padding-left:3px; padding-right:3px'>" + vehicle.vehicle_number+ "</td>"+
+				            						"<td width=10% style='text-align:left; padding-left:3px; padding-right:3px'>" + vehicle.front_or_back_tyres + "</td>"+	
+				            						"<td width=10% style='text-align:left; padding-left:3px; padding-right:3px'>" + vehicle.tyre_number+ "</td>"+	
+				            					    "<td width=10% style='text-align:left; padding-left:3px; padding-right:3px'>" + vehicle.tyre_issued_reading + "</td>"+
+				            						"<td width=10% style='text-align:left; padding-left:3px; padding-right:3px'>" + vehicle.tyre_closing_reading+ "</td>"+
+				            						"<td width=10% style='text-align:left; padding-left:3px; padding-right:3px'>" + vehicle.remarks + "</td>"+
+				            						"</tr>";
+
+			            	}	            	           		
+			            	
+			            	var table_header = "<tr width=100%>"+
+								            	"<td width=5% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Sl#" + "</td>"+
+								            	"<td width=15% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Date" + "</td>"+
+												"<td width=10% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Vehicle Number" + "</td>"+
+												"<td width=15% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Front Or Back Tyres" + "</td>"+
+												"<td width=5%  style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>"  +"Tyre Number" + "</td>"+
+												"<td width=10% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" + "Tyre Issued Reading" + "</td>"+
+												"<td width=15% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" + "Tyre Closing Reading" + "</td>"+
+												"<td width=8%  style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" + "Remarks" + "</td>"+		            						
+											    "</tr>";
+				table = "<table width=95% align=center>" + table_header + table_rows + "</table>";
+				$('#vehicles').html(table);
+			            },
+			            error: function(error) {
+			                console.log(error);
+			            }
+					});
+				});
+			  });
+		  </script>
+		  <style>
+		table, th, td {
+		    border: 1px solid black;
+		}
+  </style>
+		  </head>
+<body>
+<header >
+    <div style="text-align: center; vertical-align:middle; font-size:30px">
+			HOOP
+      </div>
+
+    </header>
+    <h2 style="text-align: center; text-decoration: underline;">Vehicle Tyre Summary Report  </h2>
+    <br>
+	<table>
+		<tr> 
+		<td>Lower Date</td> 
+		<td><input type="date" id="lower_date" /></td> 
+		</tr> 
+		<tr> 
+		<td>Upper Date</td> 
+		<td><input type="date" id="upper_date" /></td> 
+		</tr>
+		</table>
+		<input type="button" id="btTest" value="Test"> <br />
+		<br />
+		<div id="resultDiv"> </div>
+		<br>
+		<label style="position:absolute; left:247px; font-size:22px"> Report</label>
+		<br><br>
+
+	<div id="vehicles">	
+	</div>
+	<br><br>
+		</body>
+</html>
+  

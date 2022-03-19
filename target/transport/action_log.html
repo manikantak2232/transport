@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Transport</title>
+	<script src="jquery-1.4.1.js">
+</script>
+	<script type="text/javascript"> 
+	
+	 function addDropDownOptions2(trucks){
+		  for(var i=0;i<trucks.length;++i){
+			  addOption2(document.add.truck_list,trucks[i].truck_number,trucks[i].pk_trucks_id);
+		  }
+		  }
+	  function addOption2(selectbox,text,id )
+	  {
+		  var optn=document.createElement("OPTION");
+		  optn.text=text;
+		  optn.value=id;
+		  selectbox.options.add(optn);
+		  }
+	  
+	  function addOption_list2(){
+		  $(document).ready(function() {
+		  $.ajax({
+				url: '/transport/trucks/all/get',
+				type: 'GET',
+			   dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+	          success: function(response) {
+	        	  var trucks=response.TruckDetails;
+	        	  addDropDownOptions2(trucks);        	  
+	          },
+	          error: function(error) {
+	              console.log(error);
+	          }
+			});
+		});
+	}
+	  function testChange2(){
+		  var selectedTruck=$("#truck_list :selected").text();
+		  var selectedTruckId=$("#truck_list :selected").val();
+		  $("#truck_id").val(selectedTruckId);		  
+	  }
+	
+			$(document).ready(function (){ 
+				$('#get').click(function () {
+					var requestData = new Object();
+					requestData.action_item= $('#action_item').val();
+					requestData.invoice_number=$('#invoice_number').val();
+					requestData.fk_truck_id=$('#truck_id').val();
+					
+					$.ajax({
+						url: '/transport/actionlog/get',
+						type: 'POST',
+						data: JSON.stringify(requestData),
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+			            success: function(response) {
+			            	var fuel = "";
+			            	var tables = "";
+			            	var table = "";
+			            	
+			            	var table_rows = "";
+			            	var fuel = "";
+			            	var storageFuelList = response;
+			            	for(var i=0; i<storageFuelList.StorageFuel.length; i++){
+			            		fuel = storageFuelList.StorageFuel[i];		            		
+				            	table_rows = table_rows + 
+				            					"<tr width=100%>"+
+					            					"<td width=5% style='text-align:left; padding-left:3px; padding-right:3px'>" + (i+1) + "</td>"+		            						
+				            						"<td width=10% style='text-align:left; padding-left:3px; padding-right:3px'>" + fuel.action_activity + "</td>"+
+				            						"<td width=15% style='text-align:left; padding-left:3px; padding-right:3px'>" + fuel.uname + "</td>"+
+				            						"<td width=5%  style='text-align:left; padding-left:3px; padding-right:3px'>" + fuel.date_time + "</td>"+
+				            						
+				            					"</tr>";
+
+			            	}	            	           		
+			            	
+			            	var table_header = "<tr width=100%>"+
+								            	"<td width=5% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" +"Sl#" + "</td>"+
+												"<td width=10% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" + "Action Avtivity" + "</td>"+
+												"<td width=15% style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>" + "User Name" + "</td>"+
+												"<td width=5%  style='background-color:#CCCCCC; padding-left:3px; padding-right:3px'>"  + "Date" + "</td>"+
+				
+											"</tr>";
+						
+			            	table = "<table width=95% align=center>" + table_header + table_rows + "</table>";
+			      
+			            	
+			            	$('#storageFuel').html(table);
+			            		            		            	
+			            },
+			            error: function(error) {
+			                console.log(error);
+			            }
+					});
+				});
+			});
+	</script>
+	<style >
+	table, th, td {
+	 border: 1px solid black;
+	 }
+	</style>
+</head>
+<body onLoad="addOption_list2()">
+<form action="" name="add" > 
+	<table>
+		<tr> 
+		<td>Action Item</td> 
+		<td><input type="text" id="action_item" /></td> 
+		</tr> 
+		<tr> 
+		<td>Invoice Number</td> 
+		<td><input type="text" id="invoice_number" /></td> 
+		</tr>
+		<tr> 
+		<td>Truck Number</td> 
+		<td><SELECT NAME="truck_list" id="truck_list" onchange=testChange2()>
+				<option selected="selected" style="display:none">Select</option>
+				</SELECT></td>
+				<td><input type=text id="truck_id" ></td>
+				</tr>
+		</table>
+		
+	<input type="button" id="get" value="Get"> <br />
+		<br />
+		<div id="resultDiv"> </div>
+		
+	<!-- <div id="users_report_header">	 -->
+		<label style="position:absolute; left:247px; font-size:22px">Action Log Details</label>
+		<br><br>
+	<!-- </div> -->	
+	<div id="storageFuel">	
+	</div>
+		
+		
+	</form>	
+</body>
+</html>

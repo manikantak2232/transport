@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sri Vaishnavi Transport Company</title><link rel="icon" type="image/png" href="/app/images/SRI VAISHNAVI icon.png" />
+ <script src="../js/logout.js" type="text/javascript"></script> 
+
+<!-- Google Fonts-->
+<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel='stylesheet' type='text/css' />
+<style type="text/css">
+/* basic positioning */
+.legend { list-style: none; }
+.legend li { float: left; margin-right: 10px; }
+.legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+/* your colors */
+.legend .superawesome { background-color: #ff00ff; }
+.legend .awesome { background-color: #00ffff; }
+.legend .kindaawesome { background-color: #0000ff; }
+.legend .notawesome { background-color: #000000; }
+</style>
+<script src="jquery-1.4.1.js" type="text/javascript"></script>
+
+<script>
+var trucks;
+var truck_numbers;
+
+var tableData="";
+var tableRow="";
+var table="";
+var x="";
+
+var trucksStatus;
+	
+var resultObject;
+	 
+$(document).ready( function() {
+    var now = new Date();
+    var month = (now.getMonth() + 1);               
+    var day = now.getDate();
+    if(month < 10) 
+        month = "0" + month;
+    if(day < 10) 
+        day = "0" + day;
+    var today = now.getFullYear() + '-' + month + '-' + day;
+    $('#selected_date').val(today);
+});
+
+
+var truck_array= new Array();
+
+function gridTrucks(){
+		$.ajax({
+			url: '/transport/trucks/all/grid/get',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json; charset=utf-8',
+			success: function(response) {
+				 trucks=response.TruckDetails;
+				 truck_numbers=response.truck_number;
+				 
+				 truck_array = truck_numbers.toString().split(",");
+				
+	
+			},
+			error: function(error) {
+				console.log(error);
+			}
+		});
+}
+
+function statusTracking() {
+
+	$("table").hide();
+	
+    	var selected_date = $('#selected_date').val();
+        $.ajax({
+            type: 'GET',
+            url: '/transport/trucks/status/tracking/get?'+'selected_date='+selected_date,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function(response) {
+
+            	 trucksStatus = response.trucksStatus;	            	
+            	 grid(truck_array);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+ 
+};
+
+function ar(truck){
+	window.open("/app/views/current_month_truck_status.html?"+
+			"&truck="+truck );
+
+}
+
+function grid(array){
+	
+	var ar=(array.length)/5;
+	
+//	document.write("<table border='solid 2px;' style='font-size:30px;'>");
+			 for(var i =0; i<ar; i++)
+			 {
+		//		var array[i]= new Array();
+			// 	document.write("<tr>");
+		
+			 	for(var k=0; k<5; k++)
+			 		{
+
+		//	tableData=tableData+("<td onClick='ar("+array[i*5+k]+")'>"+array[i*5+k]+"</td>");
+			
+				resultObject = search(array[i*5+k], trucksStatus);
+				 function search(nameKey, myArray){
+					    for (var j=0; j < myArray.length; j++) {
+					        if (myArray[j].truck_number === nameKey) {
+					        		operation= myArray[j].operation;
+						        if(operation=='in transit to factory' ){
+						        	
+						        	if(k==0){	
+						        		tableData="<tr>"+ tableData+"<td bgcolor='#00FFFF'   onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" ;
+						        	}
+						        	if(k==4){	
+						        		tableData= tableData+"<td bgcolor='#00FFFF'  onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" +"</tr>";
+						        	}
+						        	
+						        	if(k>0 & k<4){
+						        		tableData=tableData+"<td bgcolor='#00FFFF' onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>";
+						        	}
+						        }
+						        
+						        if(operation=='unloading'){
+							        	
+							        	if(k==0){	
+							        		tableData="<tr>"+ tableData+"<td bgcolor=#98FB98 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" ;
+							        	}
+							        	if(k==4){	
+							        		tableData= tableData+"<td bgcolor=#98FB98 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" +"</tr>";
+							        	}
+							        	
+							        	if(k>0 & k<4){
+							        		tableData=tableData+"<td bgcolor=#98FB98 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>";
+							        	}
+							        }
+						        if(operation=='waiting at factory'){
+						        	
+						        	if(k==0){	
+						        		tableData="<tr>"+ tableData+"<td bgcolor=#7FFFD4 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" ;
+						        	}
+						        	if(k==4){	
+						        		tableData= tableData+"<td bgcolor=#7FFFD4 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" +"</tr>";
+						        	}
+						        	
+						        	if(k>0 & k<4){
+						        		tableData=tableData+"<td bgcolor=#7FFFD4 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>";
+						        	}
+						        }
+								if(operation=='available'){
+						        	
+						        	if(k==0){	
+						        		tableData="<tr>"+ tableData+"<td bgcolor=#ff9999 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" ;
+						        	}
+						        	if(k==4){	
+						        		tableData= tableData+"<td bgcolor=#ff9999 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" +"</tr>";
+						        	}
+						        	
+						        	if(k>0 & k<4){
+						        		tableData=tableData+"<td bgcolor=#ff9999 onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>";
+						        	}
+						        }
+								if(operation=='waiting'){
+						        	
+						        	if(k==0){	
+						        		tableData="<tr>"+ tableData+"<td bgcolor=#00FF7F onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" ;
+						        	}
+						        	if(k==4){	
+						        		tableData= tableData+"<td bgcolor=#00FF7F onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" +"</tr>";
+						        	}
+						        	
+						        	if(k>0 & k<4){
+						        		tableData=tableData+"<td  bgcolor=#00FF7F onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>";
+						        	}
+						        }
+								if(operation=='in transit from factory'){
+						        	
+						        	if(k==0){	
+						        		tableData="<tr>"+ tableData+"<td bgcolor=#faea8c onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" ;
+						        	}
+						        	if(k==4){	
+						        		tableData= tableData+"<td bgcolor=#faea8c onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>" +"</tr>";
+						        	}
+						        	
+						        	if(k>0 & k<4){
+						        		tableData=tableData+"<td bgcolor=#faea8c onClick='ar(\""+array[i*5+k]+"\")'>"+array[i*5+k]+"</td>";
+						        	}
+						        }
+					        }
+					    }
+					}
+			 			/* if(array[i*5+k]=='AP28TD2785'){
+			 				document.write("<td  onClick='ar("+array[i*5+k]+")'>"+array[i*5+k]+"</td>");
+			 			}
+			 			if(array[i*5+k]=='AP28TD2787'){
+			 				document.write("<td bgcolor='#5DADE2' onClick='ar("+array[i*5+k]+")'>"+array[i*5+k]+"</td>");
+			 			} */
+			 			
+			 		} 	
+			// 	document.write("</tr>"); 
+			 	tableRow=tableData;
+			 	
+			 	
+			 }
+			 
+		//	 document.write("</table>");
+			 table="<center><table style='font-size:20px; border-style: groove;  padding: 15px; border=1'>"+tableRow+"</table></center>"
+			 
+			 $('#table').html(table); 
+			 
+			 tableData = "";
+			
+}
+
+
+
+</script>	
+
+</head>
+<body onload="gridTrucks();statusTracking()">
+<br><br>
+
+<div style="text-align: center;">
+<label >Date : </label><input type="date" id="selected_date" style='border: 2px solid #008fb3;
+    border-radius: 4px;'/>
+<br><br>
+
+<input type="button" id="get" value="get" onclick="statusTracking()"/>
+<br><br>
+
+<div id="table"></div>
+<br><br>
+<ul class="legend" style="text-align: center;margin: auto;width: 30%;">
+    <li><span class="superawesome"></span> Available</li>
+    <li><span class="awesome"></span> Idle</li>
+    <li><span class="kindaawesome"></span> Loading</li>
+    <li><span class="notawesome"></span> Unloading</li>
+</ul>
+
+</div>
+<!-- <table border="solid 2px;" style="font-size:30px; "> -->
+
+				 
+	</body>
+</html>

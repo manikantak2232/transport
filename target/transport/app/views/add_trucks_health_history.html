@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Transport</title>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="all" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <!-- <link href="css/styles.css" media="all" rel="stylesheet"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.1/modernizr.min.js"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <link href="../css/styles_2.css" media="all" rel="stylesheet">
+    <script src="../js/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../js/add_trucks_health_history.js" type="text/javascript"></script>
+    <script src="../js/driver.js" type="text/javascript"></script>
+    <script src="../js/truck.js" type="text/javascript"></script>
+    <script src="../js/sparepart.js" type="text/javascript"></script>
+
+</head>
+  <body  onLoad="addOption_list1(); addOption_list2(); currentDate()">
+    <header class="clearfix">
+      <a class="menu pull-left" data-position="left" href="#">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </a>
+
+      <div  class="menu pull-right" data-position="right">
+       <a href="#" style="color:white">settings</a>
+       |	 
+	   <a href="#" style="color: white">Log out</a>	   
+       </div>
+      	<a class="menu" data-position="top" href="#">
+        
+      	</a>
+ </header>
+
+ <div class="overlay"></div>
+
+    <nav class="left">
+          <ul class="parent-menu">
+        <li>
+          <a href="#">Trucks</a>
+           <ul class="submenu">
+               <li><a href="add_trucks_details.html">New Truck</a></li>
+               <li><a href="update_trucks_details.html">Edit Details</a></li>
+                <li><a href="get_trucks_details.html">Get Details</a></li>
+               <li><a href="#">Delete Truck</a></li>
+          
+          </ul>
+        </li>
+        <li>
+          <a href="#">Truck Allotment</a>
+          <ul class="submenu">
+               <li><a href="add_trucks_allotment.html">New Allotment</a></li>
+               <li><a href="update_trucks_allotment.html">Edit Allotment</a></li>
+                <li><a href="get_trucks_allotment.html">Get Allotment</a></li>
+               <li><a href="#">Delete Allotment</a></li>
+          
+          </ul>
+        </li>
+        <li>
+          <a href="#">Quote</a>
+          <ul class="submenu">
+               <li><a href="add_trucks_parts_quote.html">New Quote</a></li>
+               <li><a href="update_trucks_parts_quote.html">Edit Quote</a></li>
+                <li><a href="get_trucks_parts_quote.html">Get Quote</a></li>
+               <li><a href="#">Delete Quote</a></li>
+          
+          </ul>
+        </li>
+    
+        <li>
+          <a href="">Truck Maintenance</a>
+          <ul class="submenu">
+               <li><a href="#">New Service</a></li>
+               <li><a href="get_trucks_service.html">Edit Service</a></li>
+               <li><a href="#">Delete Service</a></li>
+              
+          </ul>
+        </li>
+        <li>
+          <a href="#">Spare Parts</a>
+          <ul class="submenu">
+               <li><a href="#">Allot Parts</a></li>
+               <li><a href="update_spare_part_allotment.html">Edit Details</a></li>
+                <li><a href="get_spare_part_allotment_by_date.html">Get Details</a></li>
+               <li><a href="#">Delete Parts</a></li>
+          
+          </ul>
+        </li>
+        <li>
+          <a href="#">Tyres</a>
+        </li>        
+         <li>
+          <a href="#">Report</a>
+        </li>
+        <li>
+          <a href="#">Accounts</a>
+        </li>
+      </ul>
+    </nav>
+	<h2 style="text-align: center; text-decoration: underline;">Trucks Health History</h2>	
+   <br>
+
+ <div class="container main-content" style="text-align: center; top:-40px">
+		<div class="form_1" > 
+		<FORM name="add">
+			<!-- <form action="" name="add" >  -->
+				<div id="Message" align=center style="color:#0000FF; font-weight:bold"> 
+				</div>	
+				<br><br>	
+				<label>Description</label>
+				<input type="text" id="description" />
+				<br><br>
+				<label>Truck Number</label> 
+				<SELECT NAME="truck_list" id="truck_list" onchange=testChange2()>
+				<option selected="selected" style="display:none">Select</option>
+				</SELECT>
+				<input type=text id="truck_id" disabled>
+				<br><br>
+				<label>Date</label>				
+				<input type="text" id="date" disabled/>
+				<br><br>
+				<label>Spare Parts Name </label>
+				<SELECT NAME="part_list" id="part_list" onchange=testChange1()>
+				<option selected="selected" style="display:none">Select</option>
+				</SELECT>
+				<input type=text id="part_id" disabled>
+				<button type="button" id="insert" value="insert" style="text-align: center">Insert</button>
+				
+							
+			</form>
+		</div>
+	</div>
+	 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+ <script src="../js/main.js"></script>
+
+  </body>
+</html>

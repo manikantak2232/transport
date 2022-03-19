@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sri Vaishnavi Transport Company</title><link rel="icon" type="image/png" href="/app/images/SRI VAISHNAVI icon.png" />
+ <script src="../js/logout.js" type="text/javascript"></script> 
+<!-- Bootstrap Styles-->
+  
+
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> -->
+<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel='stylesheet' type='text/css' />
+ 
+<!--  <link href="../css/styles.css" media="all" rel="stylesheet"> -->
+ <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+ <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+ 
+      <script src="../js/jquery-1.4.1.js" type="text/javascript"></script>
+<link href="../css/bootstrap.css" rel="stylesheet" />
+<!-- FontAwesome Styles-->
+<link href="../css/font-awesome.css" rel="stylesheet" />
+<script src="https://use.fontawesome.com/82d7bbb080.js"></script>
+<!-- Morris Chart Styles-->
+   
+<link href="../js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+<!-- Custom Styles-->
+<link href="../css/custom-styles.css" rel="stylesheet" />
+<!-- Google Fonts-->
+
+
+<script src="../js/close_seller_driver_expenditure.js" type="text/javascript"></script>
+<!-- <script src="../js/driver.js" type="text/javascript"></script>
+<script src="../js/truck.js" type="text/javascript"></script> -->
+
+<script>
+
+  </script>
+</head>
+<body onLoad="getDrivers()">
+	<div id="wrapper">
+		<nav class="navbar navbar-default top-navbar" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a href="#" class="lg-view">
+					Sri Vaishnavi Transport Company</a>
+					<a href="#" class="sm-view">
+						Svtc</a><!-- <a class="navbar-brand" href="index.html">HOOP</a>-->
+			</div>
+			<ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#" aria-expanded="false"> <i class="fa fa-gear fa-fw"></i> <i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-alerts">
+						<li><a href="#">
+								<div>
+									<i class="fa fa-wrench fa-fw"></i> settings
+								</div>
+						</a></li>
+						<li class="divider"></li>
+						<li><a href="login.html">
+								<div onclick="logout()">
+									<i class="fa fa-sign-out fa-fw"></i>Log out
+								</div>
+						</a></li>
+						<!-- /.dropdown -->
+					</ul>
+		</nav>
+		
+		<nav class="navbar-default navbar-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav" id="main-menu">
+					<li><a class="active-menu" href="#"><i class="fa fa-user"></i>Dispatch <span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li><a href="add_seller_dispatch.html">New</a></li>
+							<li><a href="start_seller_dispatch.html">Update Status</a></li>
+							<li><a href="close_seller_dispatch.html">Close</a></li>
+							<li><a href="#">Get<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level">
+									<li><a href="get_seller_dispatch.html">By Invoice Number</a></li>
+									<li><a href="get_seller_dispatch_by_date.html">By Date</a></li>
+								</ul></li>
+							<li><a href="get_seller_driver_expenditure.html">Close Expenditure</a></li>
+							<li><a href="#">Edit</a></li>
+							<li><a href="#">Delete</a></li>
+						</ul></li>
+					<li><a href="#"><i class="fa fa-map-o"></i>Invoice <span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li><a href="add_seller_invoice.html">New</a></li>
+							<li><a href="#">Get<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level">
+									<li><a href="get_seller_invoice.html">By Invoice Number</a></li>
+									<li><a href="get_seller_invoice_by_date.html">By Date</a></li>
+								</ul></li>
+							<li><a href="#">Edit</a></li>
+							<li><a href="#">Delete</a></li>
+						</ul></li>
+					<li><a href="#"><i class="fa fa-map-o"></i>Fuel <span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li><a href="add_seller_fuel.html">Add</a></li>
+							<li><a href="get_seller_fuel_by_date.html">Get</span></a>
+								</li>
+							<li><a href="#">Edit</a></li>
+							<li><a href="#">Delete</a></li>
+						</ul></li>
+					<li><a href="#"><i class="fa fa-map-o"></i>Purchase <span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li><a href="add_seller_purchase.html">New</a></li>
+							<li><a href="#">Get<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level">
+									<li><a href="get_seller_purchase.html">By Invoice Number</a></li>
+									<li><a href="get_seller_purchase_by_date.html">By Date</a></li>
+								</ul></li>
+							<li><a href="#">Edit</a></li>
+							<li><a href="#">Delete</a></li>
+						</ul></li>
+					<li><a href="#"><i class="fa fa-map-o"></i>Trip <span
+							class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li><a href="add_seller_trip_details.html">New</a></li>
+							<li><a href="close_seller_trip_details.html">Close</a></li>
+							<li><a href="#">Get<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level">
+									<li><a href="get_seller_trip_details.html">By Truck Number</a></li>
+									<li><a href="get_seller_trip_by_date.html">By Date</a></li>
+								</ul></li>
+							<li><a href="get_seller_trip_driver_expenditure.html">Close Expenditure</a></li>
+							<li><a href="#">Edit</a></li>
+							<li><a href="#">Delete</a></li>
+						</ul></li>
+					<li><a href="#"><i class="fa fa-fw fa-money"></i>Reports</a></li>
+					<li><a href="#"><i class="fa fa-fw fa-money"></i>Accounts</a></li>
+				</ul>
+			</div>
+		</nav>
+		
+	<!-- /. NAV SIDE  -->
+		<div id="page-wrapper">
+			<div id="page-inner">
+	<h2 style="text-align: center; text-decoration: underline;">Driver Expenditure</h2>
+	<br><br>
+		  <div class="form_1">
+			<form action="" name="add">
+				<div id="Message" align=center style="color: #0000FF; font-weight: bold"></div>
+				
+				<label>Driver Name </label>
+				<input type="text" id="driver_name" disabled/> 
+				 <!-- <SELECT NAME="driver_list" id="driver_list" onchange="driverChange();DriverAdvance()" >
+					<option selected="selected" style="display: none">Select</option>
+				</SELECT>  
+			
+				<input type="hidden" id="fk_driver_id" disabled>-->
+				<br>
+				<br> 
+				<label>Balance</label> <input type="text" id="balance" disabled/>
+					<br>
+					<br>
+				<label>Transport</label> <input type="text" id="transport" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Loading</label> <input type="text" id="loading" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Cover Tying </label> <input type="text" id="cover_tying" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Contonment</label> <input type="text" id="contonment" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Toll Gate</label> <input type="text" id="toll_gate" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Loading Wage</label> <input type="text" id="loading_wage" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Unloading Wage</label> <input type="text" id="unloading_wage" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Phone Bills</label> <input type="text" id="phone_bills" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Spare Parts</label> <input type="text" id="spares_parts" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Puncher</label> <input type="text" id="puncher" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Entry</label> <input type="text" id="entry" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label style="text-align: center; text-decoration: underline;">Return Loading</label>
+					<br><br>
+					<label>Transport</label> <input type="text" id="return_transport" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Loading</label> <input type="text" id="return_loading" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Unloading</label> <input type="text" id="return_unloading" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<label>Others</label> <input type="text" id="others" oninput="calculate()" placeholder="enter in rupees"/>
+					<br>
+					<br>
+					<!-- <label>Balance</label> <input type="text" id="remaining_balance" disabled/>
+					<br>
+					<br> -->
+
+			</form>
+			<br>
+			<br>
+			<button type="button"  id="insert" >Insert</button>
+		</div>
+	</div>
+	</div>
+	</div>
+	<!-- /. WRAPPER  -->
+		<!-- JS Scripts-->
+		<!-- jQuery Js -->
+
+		<script src="../js/jquery-1.10.2.js"></script>
+		<!-- Bootstrap Js -->
+		<script src="../js/bootstrap.min.js"></script>
+		<!-- Metis Menu Js -->
+		<script src="../js/jquery.metisMenu.js"></script>
+		<!-- Morris Chart Js -->
+		<script src="../js/morris/raphael-2.1.0.min.js"></script> <script
+			src="../js/morris/morris.js"></script>
+		<!-- Custom Js -->
+		<script src="../js/custom-scripts.js"></script>
+		
+		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+		        
+  <script src="../js/jquery-1.10.2.js" type="text/javascript"></script>
+      <script src="../js/jquery-ui.js" type="text/javascript"></script>
+</body>
+</html>

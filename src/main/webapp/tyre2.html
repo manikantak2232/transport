@@ -1,0 +1,111 @@
+<html>
+<head>
+<!-- <script src="../js/add_tyre_inventory.js" type="text/javascript"></script> -->
+<script src="jquery-1.4.1.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+
+
+
+$(function () {
+	var var1;
+	var var2; 
+    $("#btnAdd").bind("click", function () {
+        var div = $("<div />");
+        div.html(GetDynamicTextBox(""));
+        $("#TextBoxContainer").append(div);
+       
+    });
+    $("#btnGet").bind("click", function () {
+        var values = "";
+        $("input[name=DynamicTextBox]").each(function () {
+            values += $(this).val() + "\n";
+        });
+        alert(values);
+        var1=values;
+    });
+    
+    $("#btnGet").bind("click", function () {
+        var values1 = "";
+        $("input[name=DynamicTextBox1]").each(function () {
+            values1 += $(this).val() + "\n";
+        });
+        alert(values1);
+        var2=values1;
+    });
+
+    $("body").on("click", ".remove", function () {
+        $(this).closest("div").remove();
+    });
+    
+    $('#insert').click(function () {
+		var requestData = new Object();
+		requestData.invoice_number=$('#invoice_number').val();
+		requestData.invoice_date=$('#invoice_date').val();
+		requestData.brand_name=$('#brand_name').val();
+		requestData.tyre_number= var1;
+		requestData.tyre_type= var2;
+	
+        $.ajax({
+        	url: '/transport/tyre/inventory/add',
+			type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(requestData),
+            contentType: 'application/json; charset=utf-8',
+            success: function(response) {	            		 	         
+            	$("#Message").html("Inserted Successfully");
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+    
+});
+function GetDynamicTextBox(value) {
+    return '<input name = "DynamicTextBox"  placeholder="Enter Tyre number" type="text" value = "' + value + '" />&nbsp;' +
+    		'<input name = "DynamicTextBox1" placeholder="Enter Tyre type" type="text" value = "' + value + '" />&nbsp;' +
+            '<input type="button" value="Remove" class="remove" />'
+}
+/* valu=values;
+val1=values1; */
+
+
+
+
+</script>
+</head>
+<body>
+<div class="form_1">
+			<FORM name="add">
+				<!-- <form action="" name="add" >  -->
+				<div id="Message" align=center
+					style="color: #0000FF; font-weight: bold"></div>
+				<br>
+				<br>
+				<label>Invoice Number</label> <input type="text" id="invoice_number" />
+				<br>
+				<br>
+				<label>Invoice Date</label> <input type="date" id="invoice_date" />
+				<br>
+				<br>
+				<label>Brand Name</label> <input type="text" id="brand_name" />
+				<br>
+				<br>
+				<input id="btnAdd" type="button" value="Add" />
+				<br />
+				<br />
+				<div id="TextBoxContainer">
+				</div>
+				<br />
+				<br />
+				<input id="btnGet" type="button" value="Get Values" />
+				<br />
+				<br />
+
+				<input type="button" id="insert" value="insert" />
+			</form>
+		</div>
+
+</body>
+</html>

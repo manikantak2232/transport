@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+      
+         <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<!-- <script src="YourJquery source path"></script> -->
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+     
+     <script type="text/javascript">
+/*     $(function() {
+
+ // Below is the name of the textfield that will be autocomplete    
+    $('#university').autocomplete({
+
+            minLength: 2,
+ // The below ruby code returns the JSON which i have checked up, [{"name":"Stanford University"},{"name":"Santa Clara University"}]
+
+            source: '<%= university_path %>',
+  // This updates the textfield when you move the updown the suggestions list, with your keyboard. In our case it will reflect the same value that you see in the suggestions which is the person.given_name.
+            focus: function(event, ui) {
+                $('#university').val(ui.item.name);
+                return false;
+            },
+
+            select: function(event, ui) {
+
+                $('#university').val(ui.item.name);
+
+                            return false;
+            }
+        })
+     // The below code is straight from the jQuery example. It formats what data is displayed in the dropdown box, is something wrong in this?
+
+            .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                    .data( "item.autocomplete", item )
+
+                    .append( "<a>" + item.name + "</a>" )
+                    .appendTo( ul );
+            };
+
+    }); */
+    
+ 
+    $('#client_id').autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+            	url: '/transport/tyre/all/get',
+    			type: 'GET',
+    		   dataType: 'json',
+    			contentType: 'application/json; charset=utf-8',
+               /*  data: {
+                   user_input: request.term
+                }, */
+                success: function(response) {
+                    response.Tyres( $.map( Tyres, function( item ) {
+                       return {
+                           label: item,
+                           value: item
+                       }
+                   }));
+               }
+           });
+       },
+        autoFocus: true,
+        minLength:1 
+    });
+      </script>
+
+</head>
+<body>
+
+<div style="height: 20px;float: left;display: inline-block;padding-top:15px;">
+<span class="new_slip">Client</span>
+<input type="text" id="client_id" name="client_id" style="width:100px;" />
+</div>
+</body>
+</html>

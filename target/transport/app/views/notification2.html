@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sri Vaishnavi Transport Company</title><link rel="icon" type="image/png" href="/app/images/SRI VAISHNAVI icon.png" />
+ <script src="../js/logout.js" type="text/javascript"></script> 
+<!-- Bootstrap Styles-->
+<link href="../css/bootstrap.css" rel="stylesheet" />
+<!-- FontAwesome Styles-->
+<link href="../css/font-awesome.css" rel="stylesheet" />
+<script src="https://use.fontawesome.com/82d7bbb080.js"></script>
+<!-- Morris Chart Styles-->
+<link href="../js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+<!-- Custom Styles-->
+<link href="../css/custom-styles.css" rel="stylesheet" />
+<!-- Google Fonts-->
+<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel='stylesheet' type='text/css' />
+<script src="../js/jquery-1.4.1.js" type="text/javascript"></script>
+ <script src="../js/add_driver_allotment_to_truck.js" type="text/javascript"></script>
+<script src="../js/getDrivers.js" type="text/javascript"></script>
+<script src="../js/getTrucks.js" type="text/javascript"></script>
+<script src="../js/getAssociation.js" type="text/javascript"></script>
+<style>
+ /*    ul {
+        display:block;
+        background:#45619D;
+        list-style:none;
+        margin:0;
+        padding:12px 10px;
+        height:21px;
+    }
+    ul li {
+        float:left;
+        font:13px helvetica;
+        font-weight:bold;
+        margin:3px 0;
+    } */
+    ul li a {
+        color:#FFF;
+        text-decoration:none;
+        padding:6px 15px;
+        cursor:pointer;
+    }
+    ul li a:hover {
+        background:#425B90;
+        text-decoration:none;
+        cursor:pointer;
+    } 
+        
+    #noti_Container {
+        position:relative;
+        float:left;
+        font:13px helvetica;
+        font-weight:bold;
+        margin:3px 0;
+    }
+    
+    #noti_Container2 {
+        display:block;
+       
+        list-style:none;
+        margin:0;
+        padding:12px 10px;
+        height:21px;
+    }
+       
+    /* A CIRCLE LIKE BUTTON IN THE TOP MENU. */
+    #noti_Button {
+        width:22px;
+        height:22px;
+        line-height:22px;
+        border-radius:50%;
+        -moz-border-radius:50%; 
+        -webkit-border-radius:50%;
+        background:#FFF;
+        margin:-3px 10px 0 900px;
+        cursor:pointer;
+    }
+        
+    /* THE POPULAR RED NOTIFICATIONS COUNTER. */
+    #noti_Counter {
+        display:block;
+        position:absolute;
+        background:#E1141E;
+        color:#FFF;
+        font-size:12px;
+        font-weight:normal;
+        padding:1px 3px;
+        margin:-8px 0px 0 700px;
+        border-radius:2px;
+        -moz-border-radius:2px; 
+        -webkit-border-radius:2px;
+        z-index:1;
+    }
+        
+    /* THE NOTIFICAIONS WINDOW. THIS REMAINS HIDDEN WHEN THE PAGE LOADS. */
+    #notifications {
+        display:none;
+        width:430px;
+        position:absolute;
+        top:30px;
+        left:850px;
+        background:#FFF;
+        border:solid 1px rgba(100, 100, 100, .20);
+        -webkit-box-shadow:0 3px 8px rgba(0, 0, 0, .20);
+        z-index: 0;
+    }
+    /* AN ARROW LIKE STRUCTURE JUST OVER THE NOTIFICATIONS WINDOW */
+    #notifications:before {         
+        content: '';
+        display:block;
+ 
+        width:0;
+        height:0;
+        color:transparent;
+        border:10px solid #CCC;
+        border-color:transparent transparent #E5EBF2; 
+        margin-top:-40px;
+        margin-left:386px;
+    }
+        
+    h3 {
+        display:block;
+        color:#333; 
+        background:#FFF;
+        font-size:13px;    
+        padding:8px;
+        margin:0;
+        border-bottom:solid 1px rgba(100, 100, 100, .30);
+    }
+        
+    .seeAll {
+        background:#F6F7F8;
+        padding:8px;
+        font-size:12px;
+        font-weight:bold;
+        border-top:solid 1px rgba(100, 100, 100, .30);
+        text-align:center;
+    }
+    .seeAll a {
+        color:#3b5998;
+    }
+    .seeAll a:hover {
+        background:#F6F7F8;
+        color:#3b5998;
+        text-decoration:underline;
+    }
+    
+    
+    .button {
+  color: white;
+  display: inline-block; /* Inline elements with width and height. TL;DR they make the icon buttons stack from left-to-right instead of top-to-bottom */
+  position: relative; /* All 'absolute'ly positioned elements are relative to this one */
+  padding: 2px 5px; /* Add some padding so it looks nice */
+  right: -900px;
+    top: 10px;
+}
+
+/* Make the badge float in the top right corner of the button */
+.button__badge {
+  background-color: #fa3e3e;
+  border-radius: 2px;
+  color: white;
+ 
+  padding: 1px 3px;
+  font-size: 10px;
+  
+  position: absolute; /* Position the badge within the relatively positioned button */
+  top: 0;
+  right: 0px;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script>
+var count;
+    function countDisplay() {
+// var x=3;
+        // ANIMATEDLY DISPLAY THE NOTIFICATION COUNTER.
+        $('#noti_Counter')
+            .css({ opacity: 0 })
+            .text(count)              
+            .css({ top: '-10px' })
+            .animate({ top: '-2px', opacity: 1 }, 500);
+
+
+        $('#globe').click(function () {
+
+            $('#notifications').fadeToggle('fast', 'linear', function () {
+                if ($('#notifications').is(':hidden')) {
+                  $('#hai').css('background-color', '#2E467C');
+                }
+             //   else $('#hai').css('background-color', '#FFF');        // CHANGE BACKGROUND COLOR OF THE BUTTON.
+            });
+
+            return false;
+        });
+
+        $(document).click(function () {
+            $('#notifications').hide();
+            if ($('#noti_Counter').is(':hidden')) {
+                $('#noti_Button').css('background-color', '#2E467C');
+            }
+        });
+
+        $('#notifications').click(function () {
+            return false; 
+        });
+    };
+    
+    function getRequestCount(){
+  	  $(document).ready(function() {
+  	  $.ajax({
+  			url: '/transport/spareparts/advance/request/count/get',
+  			type: 'GET',
+  		   dataType: 'json',
+  			contentType: 'application/json; charset=utf-8',
+            success: function(response) {
+          	  var RequestCount=response.requestCount;
+			 count=RequestCount.length;
+		
+			countDisplay(count);
+		$('#count_number').html(count);
+			var toAdd = document.createDocumentFragment();
+			
+			 for(var i =0; i<count; i++)
+			 { 
+			var	 newDiv=("<div class='seeAll' style='background-color:#E5EBF2' onclick='fun(\"" +RequestCount[i].truck_maintenance_advance_id +"\")'> Maintenance Manager Requested Advance for " +RequestCount[i].truck_number  +  "</div>");
+				toAdd.append(newDiv);
+			 } 
+			$('#allNotifications').html(toAdd.textContent);
+			          	  
+            },
+            error: function(error) {
+                console.log(error);
+            }
+  		});
+  	});
+  }
+    
+   function fun(id){
+		window.open("/app/views/get_truck_maintenance_advance_admin_item_details.html?"+
+				"id="+id);
+	 //  alert(id);
+   }
+   
+/*    if(window.innerHeight > window.innerWidth){
+	    alert("Please use Landscape!");
+	}
+   
+   if(window.innerHeight < window.innerWidth){
+	    alert("Please use port!");
+	} */
+   
+   function getOrientation(){
+	    var orientation = window.innerWidth > window.innerHeight ? "Landscape" : "Portrait";
+	    alert(orientation);
+	}
+
+	 window.onresize = function(){ getOrientation(); }
+</script>
+</head>
+
+ <body onload="getRequestCount()">
+	<div id="wrapper">
+		<nav class="navbar navbar-default top-navbar" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a href="#"
+					style="font-size: 25px; padding-left: 10px; text-align: center; color: white;">Sri Vaishnavi Transport Company</a>
+   <div class="button" id="globe">
+    <i class="fa fa-globe fa-2x"></i>
+    <span class="button__badge"><div id="count_number"></div></span>   
+  </div> 
+  
+ 	<div>
+      <ul style="margin:0; padding:0;">
+            <li id="noti_Container">
+                <div id="notifications" style="background-color:#E5EBF2;">
+                    <h3 style="font-size: 17px; padding-left: 10px; background-color:#172D44;color: white;">Notifications</h3>
+                   <div style="height:300px;">
+                    <div id="allNotifications" style="background-color:#E5EBF2;"></div> 
+                   </div> 
+                </div>
+            </li>
+       </ul>
+    </div>  
+				<!-- <a class="navbar-brand" href="index.html">HOOP</a>-->
+			<!-- 	<div style="background-color:#225081!important;"><i class="fa fa-globe" aria-hidden="true" ></i></div> -->
+			</div>
+			<ul class="nav navbar-top-links navbar-right">
+<!-- 				<li  class="dropdown">
+							<div id="globe" >
+				   <div class="button" id="globe" >
+				    <i class="fa fa-globe fa-2x"></i>
+				    <span class="button__badge"><div id="count_number"></div></span>   
+				  </div>
+				  <div>
+				      <ul style="margin:0; padding:0;">
+			            <li id="noti_Container">
+			                <div id="notifications" style="background-color:#E5EBF2;">
+			                    <h3 style="font-size: 17px; padding-left: 10px; background-color:#172D44;color: white;">Notifications</h3>
+			                   <div style="height:300px;">
+			                    <div id="allNotifications" style="background-color:#E5EBF2;"></div> 
+			                   </div> 
+			                </div>
+				            </li>
+				       </ul>
+				    </div>
+			</li> -->
+		
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#" aria-expanded="false">
+					<i class="fa fa-gear fa-fw"></i> <i class="fa fa-caret-down"></i>
+				</a>
+				
+					<ul class="dropdown-menu dropdown-alerts">
+						<li><a href="#">
+								<div>
+									<i class="fa fa-wrench fa-fw"></i> settings
+								</div>
+						</a></li>
+						<li class="divider"></li>
+						<li><a href="login.html">
+								<div onclick="logout()">
+									<i class="fa fa-sign-out fa-fw"></i>Log out
+								</div>
+						</a></li>
+						<!-- /.dropdown -->
+					</ul>
+		</nav>
+		
+		<nav class="navbar-default navbar-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav" id="main-menu">
+					<li><a class="active-menu" href="#"><i class="fa fa-user"></i>New Driver <span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li><a href="add_driver_details.html">Add</a></li>			
+							<li><a href="get_driver_details.html">Get</a></li>
+								<li><a href="update_driver_details.html">Edit</a></li>
+							<li><a href="#">Delete</a></li>
+						</ul></li>
+						<li><a href="#"><i class="fa fa-map-o"></i> Driver Allotment <span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li><a href="add_driver_allotment_to_truck.html">New</a></li>			
+							<li><a href="get_driver_allotment_to_truck_by_date.html">Get</a>
+								</li>
+								<li><a href="update_driver_allotment_to_truck.html">Edit</a></li>
+							<li><a href="#">Delete</a></li>
+						</ul></li>
+						<li><a href="#"><i class="fa fa-map-o"></i>Driver Change<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li><a href="add_factory_driver_change.html">Factory</a></li>			
+							<li><a href="add_storage_driver_change.html">Nikhita</a></li>
+								<li><a href="add_seller_driver_change.html">Kamakshi</a></li>
+							
+						</ul></li>
+						<li><a href="trucks_daily_status.html"><i class="fa fa-map-o"></i>Trucks Status</a>
+						</li>
+					
+					<li><a href="#"><i class="fa fa-fw fa-money"></i>Reports</a></li>
+					<li><a href="#"><i class="fa fa-fw fa-money"></i>Accounts</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div id="page-wrapper">
+			<div id="page-inner">
+	<h2 style="text-align: center; text-decoration: underline;">Driver Allotment</h2>
+	<br><br>
+		 <form action="" name="add" > 
+				<div id="Message" align=center style="color:#0000FF; font-weight:bold"> 
+				</div>
+				<div id="loading" class=loader style="display:none;"></div>
+				<div class="form_1">
+				<label>Truck Number</label> <SELECT NAME="truck_list"
+					id="truck_list" onchange=testChange2()>
+					<option selected="selected" style="display: none">Select</option>
+				</SELECT> 
+				<input type=hidden id="truck_id" disabled>
+				<br><br>		
+				<label>Driver Name </label>
+				<SELECT NAME="driver_list" id="driver_list" onchange=testChange()>
+				<option selected="selected" style="display:none">Select</option>
+				</SELECT>
+				 <input type=hidden id="fk_driver_id">
+				<br><br>
+				<label> Date</label>
+				<input type="text" id="driver_allotment_date" disabled/>
+				<br><br>
+				<!-- <label>Allotment Location</label>
+				<input type="text" id="allotment_location" />
+				<br><br> -->
+				<label>Association</label> <SELECT NAME="association_list"
+					id="association_list" onchange=associationChange()>
+					<option selected="selected" style="display: none">Select</option>
+				</SELECT> 
+				<input type=hidden id="association_id" disabled>
+				<br><br>
+				
+				<button type="button" id="insert" value="insert" style="text-align: center">Insert</button>
+				
+
+				
+			</form>
+		</div>
+	</div>
+	</div>
+	<!-- /. WRAPPER  -->
+		<!-- JS Scripts-->
+		<!-- jQuery Js -->
+		<script src="../js/jquery-1.10.2.js"></script>
+		<!-- Bootstrap Js -->
+		<script src="../js/bootstrap.min.js"></script>
+		<!-- Metis Menu Js -->
+		<script src="../js/jquery.metisMenu.js"></script>
+		<!-- Morris Chart Js -->
+		<script src="../js/morris/raphael-2.1.0.min.js"></script> <script
+			src="../js/morris/morris.js"></script>
+		<!-- Custom Js -->
+		<script src="../js/custom-scripts.js"></script>
+		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+</body>
+</html>

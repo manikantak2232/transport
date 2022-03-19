@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>transport</title>
+<link
+	href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
+	media="all" rel="stylesheet">
+<!-- <link href="css/styles.css" media="all" rel="stylesheet">-->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.1/modernizr.min.js"></script>
+<meta
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+	name="viewport">
+<script src="jquery-1.4.1.js" type="text/javascript"></script>
+<script>
+  
+  
+  $('#text').keydown(function (e) {
+	    var regex = new RegExp("^[0-9.]+$");
+	    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+	    if (regex.test(str)) {
+	        return true;
+	    }
+
+	    e.preventDefault();
+	    return false;
+	});
+ 
+  </script>
+
+</head>
+<body >
+Text :
+<input type="text" id="text">
+</body>
+</html>

@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>HOOP</title>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="all" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <!-- <link href="css/styles.css" media="all" rel="stylesheet"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.1/modernizr.min.js"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <script src="jquery-1.4.1.js" type="text/javascript"></script>
+
+
+<script language="javascript">
+
+function addOption(selectbox,text,value)
+{
+	var optn = document.createElement("OPTION");
+	optn.text = text;
+	optn.value = value;
+	selectbox.options.add(optn);
+}
+
+function addOption_list(){
+var driver = new Array("hai","hello","bye");
+	for (var i=0; i < driver.length;++i){
+		addOption(document.add.driver_list,driver[i]);
+	}
+}
+</script>
+</head>
+
+<body onLoad="addOption_list()";>
+ 
+<FORM name="add">
+<p>Driver Name		
+<SELECT  NAME="driver_list">
+</SELECT>
+
+<input type=text id="driver_id">
+</p>
+</form>
+</body>
+</html>

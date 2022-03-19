@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>NIKHITHA</title>
+<script src="../../app/js/zuari_bill.js" type="text/javascript"></script>
+<script src="../../app/js/hamaliType.js" type="text/javascript"></script>
+<script src="../../app/js/hamaliAcc.js" type="text/javascript"></script>
+<script src="../../app/js/exportZuari.js" type="text/javascript"></script>
+<script src="../../app/js/exportRamco.js" type="text/javascript"></script>
+<script src="../../app/js/exportJsw.js" type="text/javascript"></script>
+<script src="../../app/js/exportDeccan.js" type="text/javascript"></script>
+<script src="../../app/js/exportChettinad.js" type="text/javascript"></script>
+<script src="../../app/js/exportBharathi.js" type="text/javascript"></script>
+<script src="../../app/js/exportBharathi1.js" type="text/javascript"></script>
+<script src="../../app/js/exportAnjani.js" type="text/javascript"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<link
+	href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
+	rel="stylesheet" />
+<link
+	href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css"
+	rel="stylesheet" />
+
+<script
+	src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+<script
+	src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script
+	src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+<script
+	src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+
+<!-- <script src="../../app/js/jquery-1.10.2.js"></script> -->
+<!--  <script src="../../app/js/addCashAndBankName.js"></script> -->
+<!--  <script src="../../app/js/addAccountName.js"></script> -->
+
+<link href="../../app/css/jquery-ui-1.10.2.css" rel="Stylesheet"></link>
+<script
+	src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.2/jquery-ui.min.js"></script>
+
+<script src="../../app/js/association.js" type="text/javascript"></script>
+
+<script src="../../app/js/unloadLocations.js" type="text/javascript"></script>
+<!--  <link href="../css/loader.css" rel="Stylesheet"></link> -->
+</head>
+<style type="text/css">
+.blank_row {
+	height: 20px;
+}
+
+.tab1 table, th, td {
+	
+}
+ .chettinad table, td, th {
+  border:  1px solid black;
+  border-collapse: collapse;
+ 
+}
+ 
+th, td {
+	padding-left: 30px;
+}
+
+tr.spaceUnder>td {
+	padding-bottom: 3em;
+}
+
+tr.spaceUnder1>td {
+	padding-bottom: 1em;
+}
+
+input {
+	margin-top: 5px;
+	width: 40px;
+}
+
+#input {
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+	background-color: white;
+	background-color: -moz-field;
+	border: 1px solid darkgray;
+	box-shadow: 1px 1px 1px 0 lightgray inset;
+	font: -moz-field;
+	font: -webkit-small-control;
+	margin-top: 5px;
+	padding: 2px 3px;
+	width: 398px;
+}
+#loading-img {
+	background: url(../images/loading.gif) center center no-repeat;
+	height: 100%;
+	z-index: 20;
+}
+</style>
+<body onload="addOption_list2();unload_list();hamaliType_list2();">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<nav class="container-fluid" style="background-color: black;">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<!-- <a href="#"
+					style="font-size: 19px; padding-left: 30px; text-align: center;color: white;">SVTC</a> -->
+				<a class="navbar-brand" href="#"
+					style="font-size: 19px; padding-left: 30px; text-align: center; color: white;">
+					NIKHITHA</a>
+
+			</div>
+
+			<div class="black-wrapper">
+				<div class="collapse navbar-collapse" id="navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						
+
+						<li class="dropdown"><a href="#"
+							class="dropdown-toggle color" data-toggle="dropdown">Godown Information<b
+								class="caret"></b></a>
+
+							<ul class="dropdown-menu">
+
+								<li class="dropdown-submenu"><a href="#"
+									class="dropdown-toggle" data-toggle="dropdown">Inward</a>
+									<ul class="dropdown-menu">
+										<li><a href="account.html">New</a></li>
+										<li><a href="getinward.html">View</a></li>
+
+									</ul></li>
+									<li class="dropdown-submenu"><a href="#"
+									class="dropdown-toggle" data-toggle="dropdown">Outward</a>
+									<ul class="dropdown-menu">
+										<li><a href="addOutward.html">New</a></li>
+										<li><a href="getOutward.html">View</a></li>
+
+									</ul></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">Bills<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+
+								<li><a href="billingdetails.html">Billing</a></li>
+								
+							</ul></li>
+					</ul>
+				</div>
+			</div>
+			<!-- /.navbar-collapse -->
+		</nav>
+		<!-- /.navbar-collapse -->
+	</nav>
+	<div class="overlay">
+		<div id="loading-img"></div>
+	</div>
+	<form class="form-horizontal" name="add">
+		<div class="container" style="margin-top: 50px;">
+
+			<fieldset>
+
+				<div id="edit_farmer" style="display: none"></div>
+				<div class="row">
+					<div class="col-md-2 panel panel-heading"
+						style="font-weight: bold; background-color: #f4f4f4;">Hamali
+						Information</div>
+					<div class="col-md-4 panel panel-heading"
+						style="display: none; color: red" id="contact_error"></div>
+				</div>
+
+
+
+				<div class="row form-group">
+
+					<label class="col-md-2 control-label" for="lower_date">Lower
+						Date</label>
+					<div class="col-md-3">
+						<div class="input-group">
+							<span class="input-group-addon"> <i
+								class="glyphicon glyphicon-calendar"></i>
+							</span> <input id="lowerDate" name="lower_date" required
+								class="form-control input-md" type="date">
+
+						</div>
+					</div>
+
+					<label class="col-md-2 control-label" for="upperDate">Upper
+						Date</label>
+					<div class="col-md-3"> 
+						<div class="input-group">
+							<span class="input-group-addon"> <i
+								class="glyphicon glyphicon-calendar"></i>
+							</span> <input id="upperDate" name="upperDate" required
+								class="form-control" type="date">
+
+						</div>
+					</div>
+
+
+				</div>
+
+				<div class="row form-group">
+
+					<label class="col-md-2 control-label" for="truck_no">Association
+						Company </label>
+					<div class="col-md-3">
+						<div class="input-group">
+							<span class="input-group-addon"> <i
+								class="glyphicon glyphicon-list"></i>
+							</span> <SELECT class="form-control" NAME="associationName"
+								id="associationName" onchange="associationList(); list(); ">
+								<option selected="selected" style="display: none">Select</option>
+							</SELECT>
+							<!-- </span> <input id="unloadLocationName" name="truck_no" required
+											class="form-control input-md" type="text"> -->
+						</div>
+					</div>
+
+					<label class="col-md-2 control-label" for="unloadLocationName">Storage
+						Location </label>
+					<div class="col-md-3">
+						<div class="input-group">
+							<span class="input-group-addon"> <i
+								class="glyphicon glyphicon-list"></i>
+							</span> <SELECT class="form-control" NAME="unloadLocationName"
+								id="unloadLocationName">
+								<!-- <option selected="selected" style="display: none">Select</option> -->
+							</SELECT>
+							<!-- </span> <input id="unloadLocationName" name="truck_no" required
+											class="form-control input-md" type="text"> -->
+						</div>
+					</div>
+
+				</div>
+				<div class="row form-group">
+
+					<label class="col-md-2 control-label" for="hamaliType">Hamali Type
+						 </label>
+					<div class="col-md-3">
+						<div class="input-group">
+							<span class="input-group-addon"> <i
+								class="glyphicon glyphicon-list"></i>
+							</span> <SELECT class="form-control" NAME="hamaliType"
+								id="hamaliType" >
+								<option selected="selected" style="display: none">Select</option>
+							</SELECT>
+							<!-- </span> <input id="unloadLocationName" name="truck_no" required
+											class="form-control input-md" type="text"> -->
+						</div>
+					</div>
+					</div>
+
+	
+
+				<div class="row form-group">
+					<div class="col-md-8"></div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-md-12 text-center">
+						<button id="hamaliAccount" class="btn btn-large btn-success" type="button"
+							onClick="return gethHamaliAccount()">Get</button>
+					</div>
+				</div>
+
+				<div class="overlay">
+					<div id="loading-img"></div>
+					<!--       <div class="spinner" id="loading-img">
+  <div class="cube1"></div>
+  <div class="cube2"></div>
+</div>  -->
+				</div>
+
+				<table id="example" class="display"></table>
+
+			</fieldset>
+		</div>
+		
+				
+	</form>
+</body>
+</html>

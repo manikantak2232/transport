@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<style>
+table, td {
+    border:1px solid black;
+}
+</style>
+<script>
+$(document).ready(function (){ 
+
+var max=4;
+    $('td').click(function(){
+  var col = $(this).parent().children().index($(this));
+  var row = $(this).parent().parent().children().index($(this).parent());
+
+  var colIndex = $(this).prevAll().length;
+    var rowIndex = $(this).parent('tr').prevAll().length;
+    
+    for(var i=0;i<=max;i++){
+    	var id=document.getElementById("myTable").rows[i].cells.item(colIndex);
+    	alert(id.innerHTML);
+    //	$('#hai').val(id);
+    }
+
+});
+});
+
+function calculateCells(){
+    var table = document.getElementById("table");
+    var max = 0;
+    for(var i=0;i<table.rows.length;i++) {
+        if(max < table.rows[i].cells.length)
+            max = table.rows[i].cells.length;
+    }
+    return max;
+}
+
+</script>
+</head>
+<body>
+<table id="myTable" cellspacing="1">
+    <thead>>
+        <tr>
+            <th>first name</th>
+            <th>last name</th>
+            <th>age</th>
+            <th>total</th>
+            <th>discount</th>
+            <th>diff</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>peter</td>
+            <td>parker</td>
+            <td>28</td>
+            <td>9.99</td>
+            <td>20.3%</td>
+            <td>+3</td>
+        </tr>
+        <tr>
+            <td>john</td>
+            <td>hood</td>
+            <td>33</td>
+            <td>19.99</td>
+            <td>25.1%</td>
+            <td>-7</td>
+        </tr>
+        <tr>
+            <td>clark</td>
+            <td>kent</td>
+            <td>18</td>
+            <td>15.89</td>
+            <td>44.2%</td>
+            <td>-15</td>
+        </tr>
+        <tr>
+            <td>bruce</td>
+            <td>almighty</td>
+            <td>45</td>
+            <td>153.19</td>
+            <td>44%</td>
+            <td>+19</td>
+        </tr>
+        <tr>
+            <td>bruce</td>
+            <td>evans</td>
+            <td>56</td>
+            <td>153.19</td>
+            <td>23%</td>
+            <td>+9</td>
+        </tr>
+    </tbody>
+</table>
+<div id="hai"></div>
+</body>
+</html>

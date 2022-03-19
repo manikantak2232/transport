@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Sri Vaishnavi Transport Company</title><link rel="icon" type="image/png" href="/app/images/SRI VAISHNAVI icon.png" />
+ <script src="../js/logout.js" type="text/javascript"></script> 
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="all" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="css/styles_0.css" media="all" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.1/modernizr.min.js"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <script src="jquery-1.4.1.js" type="text/javascript"></script>
+   <script src="sha1.js"></script> 
+   <style>
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 15px;
+}
+
+.alert.success {background-color: #4CAF50;}
+.alert.info {background-color: #2196F3;}
+.alert.warning {background-color: #ff9800;}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+.button {
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 14px;
+  padding: 7px;
+  width: 80px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 15px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+  <script>
+  
+
+ 	 function generatePasswordDigest(){
+ 		var password = document.getElementById("password").value
+ 		var digest = CryptoJS.SHA1(password);
+ 		document.getElementById("passwordDigest").value = digest;
+ 	 }
+
+  
+  $(document).ready(function (){ 
+		$('#login').click(function () {
+			var requestData = new Object();
+			requestData.email=$('#email').val();
+			requestData.digest=$('#passwordDigest').val();
+	        $.ajax({
+	        	url: '/transport/login/authenticate',
+				type: 'POST',
+	            dataType: 'json',
+	            data: JSON.stringify(requestData),
+	            contentType: 'application/json; charset=utf-8',
+	            success: function(response) {	            		 	         
+	            	 $("#closebtn").html(response.errorMessage);
+	            	
+	          	/* 	if(response.manager_type=="storage manager"){
+	            		window.location.href = "/app/views/add_storage_dispatch.html"; 
+	          		}
+	          		if(response.manager_type=="factory manager"){
+	            		window.location.href = "/app/views/add_factory_dispatch.html"; 
+	          		}
+	          		if(response.manager_type=="seller manager"){
+	            		window.location.href = "/app/views/add_seller_dispatch.html"; 
+	          		}
+	          		if(response.manager_type=="maintenance manager"){
+	            		window.location.href = "/app/views/add_trucks_details.html"; 
+	          		}
+	          		if(response.manager_type=="operations manager"){
+	            		window.location.href = "/app/views/add_driver_details.html"; 
+	          		} */
+	            },
+	            error: function(error) {
+	                console.log(error);
+	            }
+	        });
+	    });
+	});
+  </script>
+
+</head>
+  <body>
+<!--   <div class="alert">
+  <span class="closebtn">&times;</span>  
+  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+</div>
+
+<div class="alert success" id="alert success">
+  <span class="closebtn">&times;</span>  
+  <strong>Success!</strong> Indicates a successful or positive action.
+</div>
+
+<div class="alert info" id="alert info">
+  <span class="closebtn">&times;</span>  
+  <strong>Info!</strong> Indicates a neutral informative change or action.
+</div>
+
+<div class="alert warning"  id="alert warning">
+  <span class="closebtn">&times;</span>  
+  <strong>Warning!</strong> Indicates a warning that might need attention.
+</div> -->
+
+<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
+
+for (i = 0; i < close.length; i++) {
+    close[i].onclick = function(){
+        var div = this.parentElement;
+        div.style.opacity = "0";
+        setTimeout(function(){ div.style.display = "none"; }, 600);
+    }
+}
+</script>
+
+   <header class="clearfix">
+      
+    
+        <a href="#" style="font-size: 35px; padding-left: 10px; text-align: center; color: white;">Sri Vaishnavi Transport Company</a> 
+      
+    </header>
+
+   <div class="container main-content" style="text-align: center; ">
+      <h2 style="text-decoration: underline;">Login</h2>
+		
+				<!-- <div id="Message" align=center style="color:#0000FF; font-weight:bold"> 
+				</div>	 -->
+				<br><br>
+				<label>Email</label>
+				<input type="text" id="email" />
+				<br><br>
+				<label>Password</label>
+				<input type="text" id="password" oninput="generatePasswordDigest()"/>
+				
+				<input type="hidden" id="passwordDigest" style="width:300px">	
+	    </div>
+    <div style="text-align: center; ">
+
+         <button class="button"  id="login" ><span>Login</span></button>
+         <br><br>
+         <pn style="color:#09192A">OR</p>
+
+         <button style="text-align: center;  color: #09192A" id="insert" onclick="window.location='registration.html'" >Register</button>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

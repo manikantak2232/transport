@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>transport</title>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="all" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <!-- <link href="css/styles.css" media="all" rel="stylesheet"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.1/modernizr.min.js"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <script src="jquery-1.4.1.js" type="text/javascript"></script>
+  <script>
+$(document).ready(function (){ 
+	  
+		$('#button1').click(function () {
+			var requestData = new Object();
+			requestData.date= $('#date').val();
+			requestData.vehicle_number=$('#vehicle_number').val();
+			requestData.front_or_back_tyres=$('#front_or_back_tyres').val();
+			requestData.tyre_number=$('#tyre_number').val();
+			requestData.tyre_issued_reading=$('#tyre_issued_reading').val();
+			requestData.tyre_closing_reading=$('#tyre_closing_reading').val();
+			requestData.remarks= $('#remarks').val();
+			$.ajax({
+	        	url: '/transport/tyre/vehicletyresummaryreport/add',
+				type: 'POST',
+	            dataType: 'json',
+	            data: JSON.stringify(requestData),
+	            contentType: 'application/json; charset=utf-8',
+	            success: function(response) {	            		 	         
+	            	$("#Message").html("Inserted Successfully");
+	            },
+	            error: function(error) {
+	                console.log(error);
+	            }
+	        });
+	    });
+	});
+  </script>
+</head>
+<body>
+<header>
+<div style="text-align: center; vertical-align:middle; font-size:30px">
+			transport
+      </div>
+
+    </header>
+    <h2 style="text-align: center; text-decoration: underline;">Vehicle Tyre Summary Report</h2>
+
+    <div class="container main-content" style="text-align: center; top:-40px">
+		<div class="form_1" >
+			<form action="" name="form1" > 
+ <div id="Message" align=center style="color:#0000FF; font-weight:bold"> 
+				</div>		
+<label for="date">Date</label>
+<input type="date" id="date" />
+<br><br>
+<label for="vehicle_number">Vehicle Number</label>
+<input type="text" id="vehicle_number" />
+<br><br>
+<label for="front_or_back_tyres">Front or Back Tyres</label>
+<input type="text" id="front_or_back_tyres" />
+<br><br>
+<label for="tyre_number">Tyre Number</label>
+<input type="text" id="tyre_number" />
+<br><br>
+<label for="tyre_issued_reading">Tyre Issued Reading</label>
+<input type="text" id="tyre_issued_reading" />
+<br><br>
+<label for="tyre_closing_reading">Tyre Closing Reading</label>
+<input type="text" id="tyre_closing_reading" />
+<br><br>
+<label for="remarks">Remarks</label>
+<input type="text"  id="remarks" />
+<br><br>
+<input type="button" id="button1" value="insert" /> 
+</form>
+</div>
+</div>
+</body>
+</html>
+  

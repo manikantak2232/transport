@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>transport</title>
+ <script src="jquery-1.4.1.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+      <script src="/../app/js/driver.js" type="text/javascript"></script>
+<script src="/../app/js/truck.js" type="text/javascript"></script>
+         <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<!-- <script src="YourJquery source path"></script> -->
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+var x1;
+var x2;
+function test(){  
+	  if(x1=='' || x2==''){
+			alert("select tyre only from suggestions");
+		}
+	  else{
+	/*   $(document).ready(function (){ 
+
+	 	$('#insert').click(function () { */
+	 		var requestData = new Object();
+	 		requestData.issued_tyre_number=$('#issued_tyre_number').val();	
+	 		requestData.issued_brand_name=$('#issued_brand_name').val();
+	 		requestData.issued_tyre_type=$('#issued_tyre_type').val();
+	 		requestData.issued_tyre_category=$('#issued_tyre_category').val();
+	 		requestData.issued_and_returned_date=$('#issued_and_returned_date').val();
+	 		requestData.fk_truck_id=$('#truck_id').val();
+	 		requestData.fk_driver_id=$('#fk_driver_id').val();
+	 		requestData.issued_tyre_reading= $('#issued_tyre_reading').val();
+	 		requestData.returned_tyre_number=$('#returned_tyre_number').val();
+	 		requestData.returned_brand_name=$('#returned_brand_name').val();
+	 		requestData.returned_tyre_type=$('#returned_tyre_type').val();
+	 		requestData.returned_tyre_category=$('#returned_tyre_category').val();
+	 		requestData.returned_tyre_reading=$('#returned_tyre_reading').val();
+
+	 		$.ajax({
+	 			url: '/transport/tyre/issued/add',
+	 			type: 'POST',
+	 			dataType: 'json',
+	 			data: JSON.stringify(requestData),
+	 			contentType: 'application/json; charset=utf-8',
+	 			success: function(response) {	            		 	         
+	 				$("#Message").html("Inserted Successfully");
+	 			},
+	 			error: function(error) {
+	 				console.log(error);
+	 			}
+	 		});
+	/*  	});
+	 }); */
+	  }
+	 }
+
+function addDropDownOptions5(brand){
+	for(var i=0;i<brand.length;++i){
+		addOption5(document.add.issued_brand_name,brand[i]);
+	}
+}
+function addOption5(selectbox,text )
+{
+	var optn=document.createElement("OPTION");
+	optn.text=text;
+	selectbox.options.add(optn);
+}
+function addOption_list5(){
+	$(document).ready(function() {
+		$.ajax({
+			url: '/transport/tyre/brand/get',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json; charset=utf-8',
+			success: function(response) {
+				var brand=response.BrandNames;
+				addDropDownOptions5(brand);
+
+			},
+			error: function(error) {
+				console.log(error);
+			}
+		});
+	});
+}
+
+function addDropDownOptions7(brand){
+	for(var i=0;i<brand.length;++i){
+		addOption7(document.add.returned_brand_name,brand[i]);
+	}
+}
+function addOption7(selectbox,text )
+{
+	var optn=document.createElement("OPTION");
+	optn.text=text;
+	selectbox.options.add(optn);
+}
+function addOption_list7(){
+	$(document).ready(function() {
+		$.ajax({
+			url: '/transport/tyre/running/brand/get',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json; charset=utf-8',
+			success: function(response) {
+				var brand=response.BrandNames;
+				addDropDownOptions7(brand);
+
+			},
+			error: function(error) {
+				console.log(error);
+			}
+		});
+	});
+}
+
+  function addOption_list4(){
+	  $(document).ready(function() {
+
+		  var issued_tyre;
+		  
+		  if($('#issued_brand_name :selected').val() != 'Select' && 
+				  $('#issued_tyre_type :selected').val() != 'Select'  && 
+				  $('#issued_tyre_category :selected').val() != 'Select'){
+			  
+			/*   $('#insert').click(function () { */
+					var requestData = new Object();
+					requestData.brand_name=$('#issued_brand_name :selected').val();	
+					requestData.tyre_type=$('#issued_tyre_type :selected').val();
+					requestData.tyre_category=$('#issued_tyre_category :selected').val();
+					
+					$.ajax({
+						url: '/transport/tyre/all/bycategory/get',
+						type: 'POST',
+						dataType: 'json',
+						data: JSON.stringify(requestData),
+						contentType: 'application/json; charset=utf-8',
+						success: function(response) {
+		        	  	issued_tyre=response.Tyres; 
+		        	  	$("#issued_tyre_number").autocomplete({
+		        		  source:issued_tyre,
+		        		  minLength: 1
+		        	
+		        		});
+		        	       	
+		          },
+		          error: function(error) {
+		              console.log(error);
+		          }
+				});
+		    		
+		     }
+
+		  $.ui.autocomplete.filter = function (array, term) {
+		        var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(term), "i");
+		        x1 = $.grep(array, function (value) {
+		        	return matcher.test(value.label || value.value || value);
+		        });
+		        return x1;
+		    };
+	 
+	});
+ }
+	 
+
+  function addOption_list6(){
+	  $(document).ready(function() {
+
+		  var returned_tyre;
+		  
+		  if($('#returned_brand_name :selected').val() != 'Select' && 
+				  $('#returned_tyre_type :selected').val() != 'Select' ){
+			  
+			/*   $('#insert').click(function () { */
+					var requestData = new Object();
+					requestData.brand_name=$('#returned_brand_name :selected').val();	
+					requestData.tyre_type=$('#returned_tyre_type :selected').val();
+					
+					
+					$.ajax({
+						url: '/transport/tyre/all/runningtyres/get',
+						type: 'POST',
+						dataType: 'json',
+						data: JSON.stringify(requestData),
+						contentType: 'application/json; charset=utf-8',
+						success: function(response) {
+		        	  	returned_tyre=response.Tyres; 
+		        	  	$("#returned_tyre_number").autocomplete({
+		        		  source:returned_tyre ,
+		        		  minLength: 1
+		    
+		        		});
+		        	       	
+		          },
+		          error: function(error) {
+		              console.log(error);
+		          }
+				});
+		    		
+		     }
+
+		  $.ui.autocomplete.filter = function (array, term) {
+		        var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(term), "i");
+		        x2 = $.grep(array, function (value) {
+		        	return matcher.test(value.label || value.value || value);
+		        });
+		        return x2;
+		    };
+	 
+	});
+ }
+
+  </script>
+
+</head>
+<body onload="addOption_list5(); addOption_list2(); addOption_list(); addOption_list7()">
+
+<form name=add>
+
+				
+				<label>Date</label>
+				<input type="date" id="issued_and_returned_date" >
+				<br><br>
+				<h3>New Tyre Details</h3>
+				<label>Brand Name</label> <SELECT NAME="issued_brand_name"
+					id="issued_brand_name" onchange="addOption_list4()">
+					<option selected="selected" style="display: none">Select</option>
+				</SELECT>
+				<br><br>
+				<label>Tyre Type</label>
+				<select name="issued_tyre_type" id="issued_tyre_type" onchange="addOption_list4()">
+						<option selected="selected" style="display: none">Select</option>
+						<option value="front">Front</option>
+						<option value="housing">Housing</option>
+					
+					</select>
+					<br><br>
+				<label>Tyre Category</label>
+				<select name="issued_tyre_category" id="issued_tyre_category" onchange="addOption_list4()">
+						<option selected="selected" style="display: none">Select</option>
+						<option value="new">New Tyre</option>
+						<option value="recoup">Recoup Tyre</option>
+					
+					</select>
+					<br><br>
+				
+				<label>Tyre Number</label> <input type=text name="issued_tyre_number" id="issued_tyre_number" 
+				placeholder="Enter Tyre Number">
+				<br><br>
+				
+				<label>Truck Number</label> <SELECT NAME="truck_list"
+					id="truck_list" onchange=testChange2()>
+					<option selected="selected" style="display: none">Select</option>
+				</SELECT>
+				<input type="hidden" id="truck_id" disabled>
+				<br>
+				<br>
+				<label>Driver Name </label> 
+				<SELECT NAME="driver_list" id="driver_list" onchange=testChange()>
+					<option selected="selected" style="display: none">Select</option>
+				</SELECT> 
+				<input type="hidden" id="fk_driver_id" disabled>
+				
+				<br><br>
+				<label>Issue Reading</label>
+				<input type="text" id="issued_tyre_reading" >
+				<br><br>
+				<h3>Return Tyre Details</h3>
+				
+				<label>Brand Name</label> <SELECT NAME="returned_brand_name"
+					id="returned_brand_name" onchange="addOption_list6()">
+					<option selected="selected" style="display: none">Select</option>
+				</SELECT>
+				<br><br>
+				<label>Tyre Type</label>
+				<select name="returned_tyre_type" id="returned_tyre_type" onchange="addOption_list6()">
+						<option selected="selected" style="display: none">Select</option>
+						<option value="front">Front</option>
+						<option value="housing">Housing</option>
+					
+					</select>
+					<br><br>
+				
+				<label>Tyre Number</label> <input type=text name="returned_tyre_number" id="returned_tyre_number" 
+				placeholder="Enter Tyre Number">
+			
+				<br><br>
+				<label>Return Tyre Reading</label>
+				<input type="text" id="returned_tyre_reading" >
+				<br><br>
+						<label>Tyre Category</label>
+				<select name="returned_tyre_category" id="returned_tyre_category" onchange="addOption_list6()">
+						<option selected="selected" style="display: none">Select</option>
+						<option value="recoup">Recoup</option>
+						<option value="waste">Waste</option>
+					
+					</select>
+					<br><br>
+				<button type="button" id="insert" value="insert" onclick="test()">Insert</button>
+</form>
+</body>
+</html>
